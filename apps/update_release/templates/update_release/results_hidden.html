@@ -1,0 +1,36 @@
+{% load static %} 
+{% include 'main/header.html' %}
+<h1>Inside Member Public Lookup Results</h1>
+<h3> <a href= "{% url 'release:results' %}">Show Invalid Results</a></h3>
+<table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Projected Parole Date</th>
+        <th>Projected Discharge Date</th>
+        <th>Incarcerated Date</th>
+        <th>Birthdate</th>
+        <th>Registry?</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in result %}
+        {% if item.isValid %}<tr>
+            <td>{{item.Id}}</td>
+            <td>{{item.Name}}</td>
+            <td>{{item.Location}}</td>
+            <td>{{item.Parole_Date}}</td>
+            <td>{{item.Discharge_Date}}</td>
+            <td>{{item.Incarcerated_Date}}</td>
+            <td>{{item.DOB}}</td>
+            <td>{% if item.so %}Yes{% endif %}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</body>
+</html>
+
+

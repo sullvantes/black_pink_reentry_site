@@ -1,0 +1,7 @@
+{% load static %} 
+{% include 'main/header.html' %}
+    {% for location in cities %}
+        {{location.state}} {{location.city}}<br>
+    {% endfor %}
+</body>
+</html>

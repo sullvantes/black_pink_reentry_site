@@ -1,0 +1,23 @@
+{% load static %} 
+{% include 'main/header.html' %}
+<h1>Inside Member Public Lookup</h1>
+<h3>Uses DOC websites to find member information</h3>
+<!-- <form action="{% url 'release:ind_search' %}" method="post">
+    {% csrf_token %}
+    <input name="govID" type="text" placeholder="Government Prisoner ID --Letters and Numbers">
+    <input name="State" type="text" placeholder="IL" readonly>
+    
+    <input type="submit" value="Submit">
+</form> -->
+<form action="{% url 'release:ind_search' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <h4 for="comment">Enter IDs below separated by commas or spaces</h4>
+        <textarea class="form-control" rows="5" id="comment" name="govID"></textarea>
+        <input name="State" type="hidden" placeholder="IL" readonly>
+      </div> 
+    
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

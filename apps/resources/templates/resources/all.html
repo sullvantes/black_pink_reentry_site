@@ -1,0 +1,10 @@
+
+{% load static %} 
+{% include 'main/header.html' %}
+ {% for resource in all_resources %}
+                
+            {% include 'resources/ResourceContainerSnippet.html' %}
+            </a>    
+            {% endfor %}
+</body>
+</html>
