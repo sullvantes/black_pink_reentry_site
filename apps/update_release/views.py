@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse
 from models import *
 import sys
 import string
-from release import *
+from IL_release import *
+from FED_release import *
 
 
 def home(request):
@@ -52,10 +53,15 @@ def results(request):
     print request.session['search_members']    
     
     idoc_result=[]    
-    for id in request.session['search_members']:
-        print id
-        
-        idoc_result.append(Ill_Member(id).return_dict())
+    for raw_id in request.session['search_members']:
+        id = re.sub('[^A-Z0-9]','', raw_id.upper())
+        if len(id) == 8 and id.isdigit():
+            
+            idoc_result.append(Fed_Member(id).return_dict())
+
+        else:
+            idoc_result.append(Ill_Member(id).return_dict())
+
     request.session["idoc_result"]=idoc_result
     response = {
         'username': user,

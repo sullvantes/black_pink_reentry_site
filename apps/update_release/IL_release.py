@@ -5,29 +5,35 @@ import shutil
 import csv
 import os 
 import urllib2
+from datetime import datetime
+
+
 response = urllib2.urlopen('http://python.org/')
 html = response.read()
 
 class Ill_Member(object):
-    def __init__(self,raw_id):
-        self.id = re.sub('[^A-Z0-9]','', raw_id.upper())
+    def __init__(self,id):
+        self.id = id
         self.url = 'http://www.idoc.state.il.us/subsections/search/inms_print.asp?idoc='
         self.cut_beginning=self.id
         self.cut_end="SENTENCING INFORMATION"
+        print "Building", self.id,"..."
 
     def return_dict(self):
         member_dict={}
         member_dict['Id']=self.id
-        if self.is_valid():
+        if self.is_valid() and self.incarcerated():
             member_dict['Name']=self.get_name()
             member_dict['Location']=self.get_location()
             member_dict['DOB']=self.get_dob()
             member_dict['Parole_Date']=self.get_parole_date()
             member_dict['Incarcerated_Date']=self.get_inc_date()
             member_dict['Discharge_Date']=self.get_discharge_date()
+            member_dict['TypeState']='IL'
+            member_dict['so']=self.get_so()
+            
         else:
-            member_dict['Name']=self.invalid_reason
-
+            member_dict['Name']=self.invalid_reason()
         return member_dict
 
     def is_valid(self):
@@ -40,7 +46,10 @@ class Ill_Member(object):
             return " does not appear to be valid. This ID has " + str(len(self.id)) + " characters and IDOC IDs should have 6 characters."
         
         if not self.id[0].isalpha() or not self.id[1:].isdigit():
-            return self.id + " does not appear to be valid. IDOC ID's have the form A12345. It may be a different state, federal or Illinois DHS."
+            return " does not appear to be valid. IDOC ID's have the form A12345. It may be a different state, federal or Illinois DHS."
+        
+        if not self.incarcerated():
+            return " does not return a valid result. There may be a typo or the member may be released."
         return None
 
     def get_soup(self):
@@ -48,21 +57,20 @@ class Ill_Member(object):
         response = urllib2.urlopen(full_url)
         html = response.read()
         soup=BeautifulSoup(html, "html.parser")
-        return soup
+        soup_string = soup.get_text().strip()
+        return soup_string
+    
+    def incarcerated(self):
+        if 'Inmate NOT found' in self.get_soup():
+            return False
+        return True
     
     def cut_soup(self):
-        soup_string = self.get_soup().get_text().strip()
+        soup_string=self.get_soup()
         start_index = soup_string.find(self.cut_beginning)
         end_index = soup_string.find(self.cut_end)
         return soup_string[start_index:end_index]
- 
-    def incarcerated(self):
-        if self.is_valid():
-            if 'Inmate NOT found' in self.get_soup():
-                return False
-        return True
-        
-    
+
     def get_so(self):
         if 'Sex Offender Registry Required' in self.get_soup():
             return True
@@ -82,31 +90,41 @@ class Ill_Member(object):
         return item   
     
     def get_name(self):
-        return self.get_item(self.id + " - ","Parent Institution:")
+        return self.get_item(self.id + " - ","Parent Institution:").title()
 
     def get_location(self):
-        return self.get_item("Parent Institution:","Offender Status:")
+        return self.get_item("Parent Institution:","Offender Status:").title()
 
     def format_date(self,date):
         reverse_date= date[6:10]+'-'+date[0:2]+'-'+date[3:5]
         return reverse_date
 
+    def make_datetime(self,date):
+        try:
+            obj=datetime.strptime(date, '%m/%d/%Y').strftime('%Y-%m-%d')
+        except:
+            obj="No Date Given"
+        return obj
+
 
     def get_dob(self):
         dob=self.get_item('Date of Birth: ',10) 
-        return self.format_date(dob)
+        return self.make_datetime(dob)
 
     def get_inc_date(self):
         dob=self.get_item('Admission Date: ',10) 
-        return self.format_date(dob)
+        return self.make_datetime(dob)
 
     def get_parole_date(self):
         dob=self.get_item('Projected Parole Date: ',10) 
-        return self.format_date(dob)
+        return self.make_datetime(dob)
     
     def get_discharge_date(self):
         dob=self.get_item('Projected Discharge Date: ',10) 
-        return self.format_date(dob)
+        return str(self.make_datetime(dob))
+
+
+
 
 # test = Ill_Member('IL','R85647')
 # print test.state
