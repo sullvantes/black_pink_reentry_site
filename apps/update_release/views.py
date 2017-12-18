@@ -88,7 +88,11 @@ def results_hidden(request):
     
     idoc_result=[]    
     for id in request.session['search_members']:
-         idoc_result.append(Ill_Member(id).return_dict())
+#         idoc_result.append(Ill_Member(id).return_dict())
+        memb = Ill_Member(id).return_dict()
+        this_facility = Facility.objects.get(scraped_name__icontains=memb['Location'])
+        memb['mailing_address']=this_facility.mailing_address()
+        idoc_result.append(memb)
     request.session["idoc_result"]=idoc_result
     response = {
         'username': user,

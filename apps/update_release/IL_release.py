@@ -31,6 +31,7 @@ class Ill_Member(object):
         member_dict['Id']=self.id
         if self.is_valid() and self.incarcerated():
             member_dict['Name']=self.get_name()
+            member_dict['Alpha_Name']=self.get_alpha_name()
             member_dict['Location']=self.get_location()
             member_dict['DOB']=self.get_dob()
             member_dict['Parole_Date']=self.get_parole_date()
@@ -38,7 +39,7 @@ class Ill_Member(object):
             member_dict['Discharge_Date']=self.get_discharge_date()
             member_dict['TypeState']='IL'
             member_dict['so']=self.get_so()
-            member_dict['mailing_address']=self.get_mailing_address()
+            member_dict['isValid']=self.is_valid()
             
         else:
             member_dict['Name']=self.invalid_reason()
@@ -97,24 +98,15 @@ class Ill_Member(object):
         item = self.cut_soup()[beginning_index:end_index].strip()    
         return item   
     
-    def get_name(self):
+    def get_alpha_name(self):
         return self.get_item(self.id + " - ","Parent Institution:").title()
 
+    def get_name(self):
+        name = self.get_alpha_name().split(',')
+        return name[1] + " "+ name[0]
+    
     def get_location(self):
         return self.get_item("Parent Institution:","Offender Status:").title()
-
-    def get_mailing_address(self):
-#        all_entries = Facility.objects.all()
-#        for entry in all_entries:
-#            print entry.mailing_address
-        print self.get_location
-        this_facility = Facility.objects.filter(scraped_name__icontains=self.get_location)
-#        print this_facility.mailing_address[0].__str__
-#        print this_facility.zip_code
-        for e in this_facility:
-            for thing in e:
-                print thing.im_self
-        return "Mailing Address"
         
     def format_date(self,date):
         reverse_date= date[6:10]+'-'+date[0:2]+'-'+date[3:5]
