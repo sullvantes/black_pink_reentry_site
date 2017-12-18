@@ -1,13 +1,13 @@
+{% extends 'main/base.html' %}
 
-{% load static %} 
-{% include 'main/header.html' %}
-        <div class="newOrgForm">
-            <form action="{%url 'resources:add_org'%}" method="post">
-            {% csrf_token %}
-                {{ form.as_p}}
-            <input class="headButton" type="submit" value="Submit" />
-            </form>
-        </div>
-    
-</body>
-</html>
+{% block title %}Add Organization{% endblock %}
+
+{% block content %}
+    <div class="newOrgForm">
+        <form action="{%url 'resources:add_org'%}" method="post">
+        {% csrf_token %}
+            {{ form.as_p}}
+        <input class="headButton" type="submit" value="Submit" />
+        </form>
+    </div>
+{% endblock %}

@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import re
 from bs4 import BeautifulSoup
 import codecs
@@ -6,7 +7,13 @@ import csv
 import os 
 import urllib2
 from datetime import datetime
+from django.db import models
+from django import forms
+from django.forms import ModelForm
+from django.contrib.auth.models import User
 
+
+from models import Facility
 
 response = urllib2.urlopen('http://python.org/')
 html = response.read()
@@ -31,6 +38,7 @@ class Ill_Member(object):
             member_dict['Discharge_Date']=self.get_discharge_date()
             member_dict['TypeState']='IL'
             member_dict['so']=self.get_so()
+            member_dict['mailing_address']=self.get_mailing_address()
             
         else:
             member_dict['Name']=self.invalid_reason()
@@ -95,6 +103,19 @@ class Ill_Member(object):
     def get_location(self):
         return self.get_item("Parent Institution:","Offender Status:").title()
 
+    def get_mailing_address(self):
+#        all_entries = Facility.objects.all()
+#        for entry in all_entries:
+#            print entry.mailing_address
+        print self.get_location
+        this_facility = Facility.objects.filter(scraped_name__icontains=self.get_location)
+#        print this_facility.mailing_address[0].__str__
+#        print this_facility.zip_code
+        for e in this_facility:
+            for thing in e:
+                print thing.im_self
+        return "Mailing Address"
+        
     def format_date(self,date):
         reverse_date= date[6:10]+'-'+date[0:2]+'-'+date[3:5]
         return reverse_date

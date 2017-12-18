@@ -3,10 +3,12 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db import models 
 from models import *
 from forms import *
+
 
 def home(request):
     logged_in = False
@@ -100,41 +102,24 @@ def org_home(request,org_id):
         }    
     return render(request, "resources/org_home.html",response)
 
-
+@login_required
 def add_org(request):
-    logged_in = False
-    user=''
-    admin = False
     # if this is a POST request we need to process the form data
-    if 'current_user_id' in request.session :
-        logged_in = True
-        current_id = request.session['current_user_id']
-        current_user = User.objects.get(id=current_id)
-        if current_user.username=='admin':
-            admin = True
-        if request.method == 'POST':
-            # create a form instance and populate it with data from the request:
-            form = OrganizationForm(request.POST)
-            # check whether it's valid:
-            if form.is_valid():
-                return redirect(reverse ('resources:all_orgs'))
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = OrganizationForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            return redirect(reverse ('resources:all_orgs'))
 
-        # if a GET (or any other method) we'll create a blank form
-        
-        else:
+    # if a GET (or any other method) we'll create a blank form
+    else:
             title = "Add New Organization"
             form = OrganizationForm()
             response = {
-            'user': current_user,
-            'admin': admin,
-            'logged_in':logged_in,
-            'title':title,
             'form': form,
             }
             return render(request, 'resources/add_org.html', response)
-    else:
-        return redirect(reverse ('resources:all_orgs'))
-
 
 def test(request):
     return render(request, 'resources/test.html')

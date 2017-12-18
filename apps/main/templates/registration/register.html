@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <link rel="stylesheet" href="styles.css">
+  
+   <title>Register/Login</title>
+</head>
+<body>
+    {% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+   <h1>Welcome Admin, Register a new user below</h1>
+    <div class="container">
+    <h2> Register</h2>
+    <form action="{% url 'main:create_user' %}" method='post'>
+        {% csrf_token %} 
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" class="form-control" name="email" id="email">
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" name="username" id="username">
+        </div>
+        <div class="form-group">
+            <label>First Name</label>
+            <input type="text" class="form-control" name="first_name" id="first_name">
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" class="form-control" name="last_name" id="last_name">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" name="password" id="password">
+        </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" class="form-control" name="confirm" id="confirm">
+        </div>
+        <input type=submit value=Submit>
+    </form>
+    </div>
+
+</body>
+</html>

@@ -37,7 +37,7 @@ class Organization(models.Model):
     created_by = models.ForeignKey(User, related_name = 'resources')
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True) 
-
+    
 class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization

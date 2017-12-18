@@ -60,7 +60,10 @@ def results(request):
             idoc_result.append(Fed_Member(id).return_dict())
 
         else:
-            idoc_result.append(Ill_Member(id).return_dict())
+            memb = Ill_Member(id).return_dict()
+            this_facility = Facility.objects.get(scraped_name__icontains=memb['Location'])
+            memb['mailing_address']=this_facility.mailing_address()
+            idoc_result.append(memb)
 
     request.session["idoc_result"]=idoc_result
     response = {
@@ -94,4 +97,37 @@ def results_hidden(request):
         'result':request.session["idoc_result"], 
         }    
     return render(request, "update_release/results_hidden.html", response)
-    
+
+def add_facility(request):
+    logged_in = False
+    user=''
+    admin = False
+    # if this is a POST request we need to process the form data
+    if 'current_user_id' in request.session :
+        logged_in = True
+        current_id = request.session['current_user_id']
+        current_user = User.objects.get(id=current_id)
+        if current_user.username=='admin':
+            admin = True
+        if request.method == 'POST':
+            # create a form instance and populate it with data from the request:
+            form = FacilityForm(request.POST)
+            # check whether it's valid:
+            if form.is_valid():
+                return redirect(reverse ('update_release:add_facility'))
+
+        # if a GET (or any other method) we'll create a blank form
+        
+        else:
+            title = "Add New Facility"
+            form = FacilityForm()
+            response = {
+            'user': current_user,
+            'admin': admin,
+            'logged_in':logged_in,
+            'title':title,
+            'form': form,
+            }
+            return render(request, 'update_release/add_facility.html', response)
+    else:
+        return render(request, "update_release/home.html")

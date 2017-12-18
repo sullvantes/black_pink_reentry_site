@@ -1,7 +1,10 @@
-{% load static %} 
-{% include 'main/header.html' %}
+{% extends 'main/base.html' %}
+
+
+{% block title %}Resources Home{% endblock %}
+
+{% block content %}
     {% for location in cities %}
         {{location.state}} {{location.city}}<br>
     {% endfor %}
-</body>
-</html>
+{% endblock %}
