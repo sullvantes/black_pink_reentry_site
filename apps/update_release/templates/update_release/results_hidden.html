@@ -2,6 +2,8 @@
 {% include 'main/header.html' %}
 <h1>Inside Member Public Lookup Results</h1>
 <h3> <a href= "{% url 'release:results' %}">Show Invalid Results</a></h3>
+<h5> <a href= "{% url 'release:csv_print' %}">Download these results to CSV</a></h5>
+<h5> <a href= "{% url 'members:update_searched' %}">Add These Members to DB</a></h5>
 <table class="table">
     <thead>
       <tr>
@@ -18,16 +20,21 @@
     </thead>
     <tbody>
         {% for item in result %}
-        {% if item.isValid %}<tr>
-            <td>{{item.Id}}</td>
-            <td>{{item.Alpha_Name}}</td>
-            <td>{{item.Location}}</td>
-            <td>{{item.Name}} {{item.Id}}<br>{{item.mailing_address.0}}<br>{{item.mailing_address.1}}<br>{{item.mailing_address.2}}</td>
-            <td>{{item.Parole_Date}}</td>
-            <td>{{item.Discharge_Date}}</td>
-            <td>{{item.Incarcerated_Date}}</td>
-            <td>{{item.DOB}}</td>
+        {% if item.isValid %}
+        <tr>
+            <td>{{item.gov_id}}</td>
+            <td>{{item.given_name_alpha}}</td>
+            <td>{{item.facility_name}}</td>
+            <td>{{item.given_name}} {{item.gov_id}}<br>
+                {{item.mailing_address.0}}<br>
+            {{item.mailing_address.1}}<br>
+            {{item.mailing_address.2}}<br></td>
+            <td>{{item.parole_date}}</td>
+            <td>{{item.discharge_date}}</td>
+            <td>{{item.incarcerated_date}}</td>
+            <td>{{item.birthday }}</td>
             <td>{% if item.so %}Yes{% endif %}</td>
+        </tr>
         {% endif %}
         {% endfor %}
     </tbody>

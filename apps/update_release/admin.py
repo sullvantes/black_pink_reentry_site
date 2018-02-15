@@ -33,3 +33,7 @@ class FacilityAdmin(admin.ModelAdmin):
 #class FacilityTypeAdmin(admin.ModelAdmin):
 #    search_fields = ['name']
 #    #readonly_fields = ['name']
+
+
+
+

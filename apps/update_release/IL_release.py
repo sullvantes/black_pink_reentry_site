@@ -12,8 +12,9 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 
-
+#Offender Status:	PAROLE
 from models import Facility
+from ..manage_member.models import *
 
 response = urllib2.urlopen('http://python.org/')
 html = response.read()
@@ -28,23 +29,45 @@ class Ill_Member(object):
 
     def return_dict(self):
         member_dict={}
-        member_dict['Id']=self.id
+        member_dict['gov_id']=self.id
         if self.is_valid() and self.incarcerated():
-            member_dict['Name']=self.get_name()
-            member_dict['Alpha_Name']=self.get_alpha_name()
-            member_dict['Location']=self.get_location()
+            member_dict['given_name']=self.get_name()
+            member_dict['given_name_alpha']=self.get_alpha_name()
+            member_dict['status']=self.get_status()
+            member_dict['Incarcerated_Date']=self.get_inc_date()
             member_dict['DOB']=self.get_dob()
             member_dict['Parole_Date']=self.get_parole_date()
-            member_dict['Incarcerated_Date']=self.get_inc_date()
-            member_dict['Discharge_Date']=self.get_discharge_date()
+            member_dict['Status']= self.get_status()
+            if member_dict['Status'] == "PAROLE":
+                facl_keyword="Free World"
+                member_dict['Discharge_Date']=""   
+            else:
+                facl_keyword= self.get_location()
+                member_dict['Discharge_Date']=self.get_discharge_date()
+            member_dict['facility_name'] = self.get_location()
             member_dict['TypeState']='IL'
             member_dict['so']=self.get_so()
             member_dict['isValid']=self.is_valid()
-            
         else:
             member_dict['Name']=self.invalid_reason()
         return member_dict
 
+    def make_new_member(self):
+        new_member = Member(
+                    gov_id = self.id, 
+                    given_name = self.get_name(),
+                    given_name_alpha = self.get_alpha_name(),
+                    birthday=self.get_dob(),
+                    incarcerated_date=self.get_inc_date(),
+                    parole_date=self.get_parole_date(),
+                    so=self.get_so(),
+                    status=self.get_status(),
+                        )
+        if d_date:
+            new_member.discharge_date=d_date
+            
+        
+                    
     def is_valid(self):
         if (len(self.id)!=6) or not self.id[0].isalpha() or not self.id[1:].isdigit(): 
             return False
@@ -98,6 +121,9 @@ class Ill_Member(object):
         item = self.cut_soup()[beginning_index:end_index].strip()    
         return item   
     
+    def get_status(self):
+        return self.get_item("Offender Status:","Location:")
+    
     def get_alpha_name(self):
         return self.get_item(self.id + " - ","Parent Institution:").title()
 
@@ -114,143 +140,26 @@ class Ill_Member(object):
 
     def make_datetime(self,date):
         try:
-            obj=datetime.strptime(date, '%m/%d/%Y').strftime('%Y-%m-%d')
+            timestr=datetime.strptime(date, '%m/%d/%Y').strftime('%Y-%m-%d')
         except:
-            obj="No Date Given"
-        return obj
-
+            timestr="No Date Given"
+        return timestr
 
     def get_dob(self):
         dob=self.get_item('Date of Birth: ',10) 
         return self.make_datetime(dob)
 
     def get_inc_date(self):
-        dob=self.get_item('Admission Date: ',10) 
-        return self.make_datetime(dob)
+        inc_date=self.get_item('Admission Date: ',10) 
+        return self.make_datetime(inc_date)
 
     def get_parole_date(self):
-        dob=self.get_item('Projected Parole Date: ',10) 
-        return self.make_datetime(dob)
+        if self.get_status() == "PAROLE":
+            parole_date=self.get_item('Parole Date: ',10)
+        else:
+            parole_date=self.get_item('Projected Parole Date: ',10)
+        return self.make_datetime(parole_date)
     
     def get_discharge_date(self):
-        dob=self.get_item('Projected Discharge Date: ',10) 
-        return str(self.make_datetime(dob))
-
-
-
-
-# test = Ill_Member('IL','R85647')
-# print test.state
-# print test.id
-# print test.is_valid()
-# print test.invalid_reason()
-# print test.incarcerated()
-# print test.get_so()
-# print test.get_name()
-
-
-
-# print test.get_location()
-# print test.get_dob()
-# print test.get_inc_date()
-# print test.get_parole_date()
-# print test.get_discharge_date()
-# print test.return_dict()
-
-
-# def search_IL(gov_id):
-#     result={}
-#     result["Id"]=gov_id
-#     gov_id=re.sub('[^A-Z0-9]','', gov_id.upper())
-#     if (len(gov_id)!=6): 
-#         result["Name"] = " does not appear to be valid. This ID has " + str(len(gov_id)) + " characters and IDOC IDs should have 6 characters."
-#         result["isValid"]=False
-#         return result
-    
-#     if not gov_id[0].isalpha() or not gov_id[1:].isdigit():
-#         result["Name"] = " does not appear to be valid. IDOC ID's have the form A12345. It may be a different state, federal or Illinois DHS."
-#         result["isValid"]=False
-#         return result
-             
-#     bashc = "wget --secure-protocol=TLSv1 'https://www.idoc.state.il.us/subsections/search/inms_print.asp?idoc='" + gov_id
-    
-#     os.system(bashc)
-#     try:
-# 		html=codecs.open("inms_print.asp?idoc=" + gov_id, 'r')
-#     except:
-# 		pass
-	
-#     soup=BeautifulSoup(html, "html.parser")
-    
-#     tail_snip="SENTENCING INFORMATION"
-	
-#     soup_string = soup.get_text().strip()
-#     print soup_string
-#     if "Sex Offender Registry Required" in soup_string:
-#     	result["so"] = True
-#         soup_string.replace(' Sex Offender Registry Required','')
-#     else:
-# 		result["so"] = False
-    
-#     start_index=soup_string.find(gov_id)
-#     end_index=soup_string.find(tail_snip)
-#     cut_soup = soup_string[start_index:end_index]
-    
-#     if 'Sex Offender Registry Required' in soup_string:
-#         locationlast='Sex Offender Registry Required'
-#     else:
-#         locationlast='PHYSICAL PROFILE'
-
-#     find_items = [
-# 		{ 
-# 			"first" : gov_id +' - ',
-# 			"last" : 'Parent Institution:',
-# 			"item" : 'Name',
-#            "name" : 'Name',
-# 		},
-# 		{
-# 			"last" : 'Offender Status',
-# 			"item" : 'Parent Institution: ',
-#           "name" : 'Parent_Institution',
-# 		},
-# 		{
-# 			"last" : locationlast,
-# 			"item" : 'Location: ',
-#           "name" : 'Location',
-		    
-# 		},
-# 		{
-# 			"last" : 10,
-# 			"item" : 'Date of Birth: ',
-#           "name" : 'DOB',
-# 		},
-# 		{
-# 			"last" : 10,
-# 			"item" : 'Admission Date: ',
-#           "name" : 'Incarcerated_Date',
-# 		},
-# 		{
-# 			"last" : 10,
-# 			"item" : 'Projected Parole Date: ',
-#           "name" : 'Parole_Date',
-# 		},
-# 		{
-# 			"last" : 10,
-# 			"item" : 'Projected Discharge Date: ',
-#             "name" : 'Discharge_Date',
-# 		}
-# 		]
-	
-#     for progress in find_items:
-# 		if 'first' not in progress:
-# 			cut_soup=cut_soup[cut_soup.find(progress["item"])+len(progress["item"]):]
-
-# 		else:
-# 			cut_soup=cut_soup[cut_soup.find(progress["first"])+len(progress["first"]):]
-        
-# 		if type(progress["last"]) is int:
-# 			result[progress["name"]]=cut_soup[:progress["last"]]
-# 		else:
-# 			result[progress["name"]] = cut_soup[:cut_soup.find(progress["last"])]
-#     result["isValid"]=True
-#     return result
+        dis_date=self.get_item('Projected Discharge Date: ',10) 
+        return str(self.make_datetime(dis_date))

@@ -2,6 +2,9 @@
 {% include 'main/header.html' %}
 <h1>Inside Member Public Lookup Results</h1>
 <h3> <a href= "{% url 'release:results_hidden' %}">Hide Invalid Results</a></h3>
+<h5> <a href= "{% url 'release:csv_print' %}">Download these results to CSV</a></h5>
+<h5> <a href= "{% url 'members:update_searched' %}">Add These Members to DB</a></h5>
+
 <table class="table">
     <thead>
       <tr>
@@ -20,15 +23,26 @@
     <tbody>
         {% for item in result %}
         <tr>
-            <td>{{item.Id}}</td>
-            <td>{{item.Alpha_Name}}</td>
-            <td>{{item.Location}}</td>
-            <td>{{item.Name}} {{item.Id}}<br>{{item.mailing_address.0}}<br>{{item.mailing_address.1}}<br>{{item.mailing_address.2}}</td>
-            <td>{{item.Parole_Date}}</td>
-            <td>{{item.Discharge_Date}}</td>
-            <td>{{item.Incarcerated_Date}}</td>
-            <td>{{item.DOB}}</td>
+            <td>{{item.gov_id}}</td>
+            <td>{{item.given_name_alpha}}</td>
+            {% if item.isValid %}
+            <td>{{item.facility_name}}</td>
+            <td>{{item.given_name}} {{item.gov_id}}<br>
+                {{item.mailing_address.0}}<br>
+            {{item.mailing_address.1}}<br>
+            {{item.mailing_address.2}}<br></td>
+            <td>{{item.parole_date}}</td>
+            <td>{{item.discharge_date}}</td>
+            <td>{{item.incarcerated_date}}</td>
+            {% if item.Typestate == 'FED' %}
+                <td>{{item.bday_abb }}</td>
+            {% else %}
+                <td>~ {{item.birthday.0}}/{{item.birthday.1}}/{{item.birthday.2}}</td>
+            {% endif %}
             <td>{% if item.so %}Yes{% endif %}</td>
+            {% else %}
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>{% endif %}
+            
         </tr>
         {% endfor %}
     </tbody>

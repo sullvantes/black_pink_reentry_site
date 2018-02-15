@@ -1,0 +1,49 @@
+{% load static %} 
+{% include 'main/header.html' %}
+<h1>All Saved Members</h1>
+<h3> <a href= "{% url 'release:results_hidden' %}">Hide Invalid Results</a></h3>
+<h5> <a href= "{% url 'release:csv_print' %}">Download these results to CSV</a></h5>
+<h5> <a href= "{% url 'members:update_searched' %}">Add These Members to DB</a></h5>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Mailing Address</th>
+        <th>Projected Parole Date</th>
+        <th>Projected Discharge Date</th>
+        <th>Incarcerated Date</th>
+        <th>Birthdate</th>
+        <th>Registry?</th>
+          
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in result %}
+        <tr>
+            <td>{{item.gov_id}}</td>
+            <td>{{item.given_name_alpha}}</td>
+            <td>{{item.facility.name}}</td>
+            <td>{{item.given_name}} {{item.gov_id}}<br>
+                {{item.facility.mailing_address.0}}<br>
+            {{item.facility.mailing_address.1}}<br>
+            {{item.facility.mailing_address.2}}<br></td>
+            <td>{{item.parole_date}}</td>
+            <td>{{item.newest_entry}}</td>
+            <td>{{item.incarcerated_date}}</td>
+            {% if item.Typestate == 'FED' %}
+                <td>{{item.bday_abb }}</td>
+            {% else %}
+                <td>~ {{item.birthday.0}}/{{item.birthday.1}}/{{item.birthday.2}}</td>
+            {% endif %}
+            <td>{% if item.so %}Yes{% endif %}</td>
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+</body>
+</html>
+
+

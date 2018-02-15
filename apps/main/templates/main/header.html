@@ -17,8 +17,8 @@
             <div class="inlineBlock headerTextTop">Black and Pink Re-Entry<br>{% if title %} {{title}} {% endif %}
             </div>
             <div class = "loggedIn">
-                {% if logged_in %}
-                <p align='right'>Logged in as {{username}}</p>
+                {% if user.is_authenticated %}
+                <p align='right'>Logged in as {{user.get_username}}</p>
                 <a href="{% url 'main:logout' %}"><button class="button headButton"> Logout </button></a>
                     {% if admin %}
                         <a href="{% url 'main:register' %}"><button class="button headButton">Add a User</button></a>

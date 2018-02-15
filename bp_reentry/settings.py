@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'apps.main',
     'apps.resources',
     'apps.update_release',
+    'apps.manage_member',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

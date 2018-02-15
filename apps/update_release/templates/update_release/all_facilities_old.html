@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+
+{% block title %}All Facilities{% endblock %}
+
+
+{% block content %}
+    {% for facility in all_facilities %}
+        {% include 'update_release/FacilityContainerSnippet.html' %}
+    {% endfor %}
+{% endblock %}
+

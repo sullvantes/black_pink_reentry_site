@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% block title %}All Facilities{% endblock %}
+
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<body>
+     <label for="sel1">Select a Facility to Edit:</label><br>
+        {% for facility in all_facilities %}
+            
+            <a href="{% url 'release:facility_home' facility_id=facility.id %}">{{facility.scraped_name}}</a><br>
+        {% endfor %}
+  
+</body>
+</html>
+
+    
+    
+{% endblock %}
+

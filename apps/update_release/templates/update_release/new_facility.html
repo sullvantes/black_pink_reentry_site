@@ -1,0 +1,14 @@
+
+{% load static %} 
+{% include 'main/header.html' %}
+        <div class="newOrgForm">
+            <form action="{% url 'release:add_facility'%}" method="post">
+            {% csrf_token %}
+                {{ form.as_p}}
+                
+            <input class="headButton" type="submit" value="Submit" />
+            </form>
+        </div>
+    
+</body>
+</html>
