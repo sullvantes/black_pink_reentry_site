@@ -30,26 +30,25 @@ class Ill_Member(object):
     def return_dict(self):
         member_dict={}
         member_dict['gov_id']=self.id
+        member_dict['isValid']=self.is_valid()
         if self.is_valid() and self.incarcerated():
             member_dict['given_name']=self.get_name()
             member_dict['given_name_alpha']=self.get_alpha_name()
             member_dict['status']=self.get_status()
-            member_dict['Incarcerated_Date']=self.get_inc_date()
-            member_dict['DOB']=self.get_dob()
-            member_dict['Parole_Date']=self.get_parole_date()
-            member_dict['Status']= self.get_status()
-            if member_dict['Status'] == "PAROLE":
-                facl_keyword="Free World"
-                member_dict['Discharge_Date']=""   
+            member_dict['incarcerated_date']=self.get_inc_date()
+            member_dict['birthday']=self.get_dob()
+            member_dict['parole_date']=self.get_parole_date()
+            member_dict['status']= self.get_status()
+            if member_dict['status']== "Par":
+                member_dict['facility_name']="Free World"
+                member_dict['discharge_date']=""   
             else:
-                facl_keyword= self.get_location()
-                member_dict['Discharge_Date']=self.get_discharge_date()
-            member_dict['facility_name'] = self.get_location()
-            member_dict['TypeState']='IL'
+                member_dict['facility_name'] = self.get_location()
+                member_dict['discharge_date']=self.get_discharge_date()
+            member_dict['typestate']='IL'
             member_dict['so']=self.get_so()
-            member_dict['isValid']=self.is_valid()
         else:
-            member_dict['Name']=self.invalid_reason()
+            member_dict['invalid_reason']=self.invalid_reason()
         return member_dict
 
     def make_new_member(self):
@@ -122,7 +121,12 @@ class Ill_Member(object):
         return item   
     
     def get_status(self):
-        return self.get_item("Offender Status:","Location:")
+        status_text=self.get_item("Offender Status:","Location:")
+        if status_text == 'IN CUSTODY':
+            return 'Inc'
+        if status_text == 'PAROLE':
+            return 'Par'
+        
     
     def get_alpha_name(self):
         return self.get_item(self.id + " - ","Parent Institution:").title()

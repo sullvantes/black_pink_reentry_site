@@ -9,8 +9,8 @@ from models import *
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = [ 'gov_id', 'given_name','given_name_alpha', 'typestate', 'birthday', 'so', 'status', 'facility', 'created_by', 'created_at', 'updated_at']
+    list_display = [ 'gov_id', 'given_name','given_name_alpha', 'typestate', 'birthday', 'so', 'status', 'facility', 'incarcerated_date', 'parole_date', 'discharge_date', 'created_by', 'created_at', 'updated_at']
     
-@admin.register(Release)
-class ReleaseAdmin(admin.ModelAdmin):
-    list_display = ['member', 'incarcerated_date', 'parole_date', 'discharge_date', 'created_at']
+@admin.register(Change)
+class ChangeAdmin(admin.ModelAdmin):
+    list_display = ['member', 'attribute', 'verbose', 'created_at']

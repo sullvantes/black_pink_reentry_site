@@ -42,18 +42,17 @@ def results(request):
                     memb['bday_abb'] = "~" + memb['birthday'][0:4]
                 except:
                     memb['bday_abb']=""
-                try:
-                    memb_fac = Facility.objects.get(scraped_name = memb['facility_name'])
-                    memb['mailing_address']=memb_fac.mailing_address()
-                except:
-                    memb['mailing_address']=[[],[],[]]
-                    
             else:
                 memb=Ill_Member(id).return_dict()
                 try:
                     memb['bday_abb'] = memb['birthday'][0:4]+'/'+memb['birthday'][4:2]+'/'+memb['birthday'][6:2]
                 except:
-                    memb['bday_abb']=""
+                    memb['bday_abb']=""    
+            try:
+                memb_fac = Facility.objects.get(scraped_name = memb['facility_name'])
+                memb['mailing_address']=memb_fac.mailing_address()
+            except:
+                memb['mailing_address']=[[],[],[]]
             search_result.append(memb)
             
         request.session["search_result"]=search_result
@@ -123,18 +122,19 @@ def csv_print(request):
     response['Content-Disposition'] = 'attachment; filename='+filename
     
     writer = csv.writer(response,dialect='excel')
-    fieldnames = [  'Id', 
+    fieldnames = [  'ID', 
                     'Name', 
                     'Location',
                     'Address',
-                    'Parole_Date',
-                    'Discharge_Date',
-                    'Incarcerated_Date',
-                    'DOB',
-                    'so'
+                    'Projected Parole Date',
+                    'Projected Discharge Date',
+                    'Incarcerated Date',
+                    'Birthday',
+                    'Registry?'
                  ]
     writer = csv.DictWriter(response, dialect='excel', fieldnames=fieldnames, extrasaction='ignore')
-    csv_dict= sorted(request.session['idoc_result'], key=lambda k: k[u'Name']) 
+#    csv_dict= sorted(request.session['search_result'], key=lambda k: k[u'Alpha_Name']) 
+    csv_dict=request.session['search_result']
     for dict in csv_dict:
         mailing_address=''
 #        print dict[u'mailing_address']
@@ -144,6 +144,30 @@ def csv_print(request):
         except:
             mailing_address = "Facility is not in the DB. Please Investigate."
         dict['Address'] = mailing_address
+        dict['Name']=dict['given_name_alpha']
+        dict['ID']=dict['gov_id']
+        dict['Location']=dict['facility_name']
+        
+        try:
+            dict['Projected Parole Date']=dict['parole_date']
+        except:
+            pass
+        try:
+            dict['Projected Discharge Date']=dict['discharge_date']
+        except:
+            pass
+        try:
+            if dict['typestate'] == 'FED':
+                dict['Birthday']=dict['bday_abb']
+            else:
+                dict['Birthday']=dict['birthday']
+        except:
+            pass
+        try:
+            dict['Registry?']=dict['so']
+        except:
+            pass
+            
     writer.writeheader()
 #    writer.writerow(['ID',
 #                    'Name',

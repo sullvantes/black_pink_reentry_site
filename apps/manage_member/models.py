@@ -21,18 +21,30 @@ class Member(models.Model):
     given_name_alpha = models.CharField(max_length=255, blank=True,help_text="given name, last name first")
     typestate=models.CharField(max_length=10, blank=True,help_text="given name, last name first")
     birthday=models.CharField(max_length = 10, blank=True,help_text="birthday in YYYYMMDD, if no full birthday, unknowns are '00'")
-    
-    
     so=models.NullBooleanField(null=True)
     status = models.CharField(max_length=6, choices=STATUS_CHOICES, default='Inc' )
     facility = models.ForeignKey(Facility, related_name = 'members')
+    incarcerated_date=models.DateField(blank=True, null=True)
+    parole_date=models.DateField(blank=True, null=True)
+    discharge_date=models.DateField(blank=True, null=True)
     created_by = models.ForeignKey(User, related_name = 'members')
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True) 
     
+    
     def __str__(self):
         return self.given_name
-        
+    
+    def make_change(self, attr, new_value):
+        old_value = getattr(self, attr)
+        if old_value is not new_value:
+            setattr(self, attr, new_value)
+            self.save()
+            change_str = attr+" was changed from "+str(old_value)+" to "+str(new_value)
+            return Change.objects.create(member = self, attribute = attr, verbose= change_str)
+        else:
+            return None
+            
 class NewMemberForm(forms.ModelForm):
     class Meta:
         model = Member
@@ -50,9 +62,10 @@ class NewMemberForm(forms.ModelForm):
 #            }
 #        }
 
-class Release(models.Model):
+class Change(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    incarcerated_date=models.DateTimeField(blank=True, null=True)
-    parole_date=models.DateTimeField(blank=True, null=True)
-    discharge_date=models.DateTimeField(blank=True, null=True)
+    attribute = models.CharField(max_length=255, blank=True,help_text="attribute changed")
+    verbose = models.CharField(max_length=255, blank=True,help_text="verbose change")
     created_at = models.DateTimeField(auto_now_add = True)
+
+    

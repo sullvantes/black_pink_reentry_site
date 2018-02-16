@@ -11,7 +11,7 @@ class Fed_Member(object):
     def __init__(self,id):
         self.id = id
         self.url = 'https://www.bop.gov/PublicInfo/execute/inmateloc?todo=query&output=json&inmateNumType=IRN&inmateNum='
-        self.is_valid()
+        self.is_valid_id()
         req = urllib2.Request(self.url + self.id)
         response = urllib2.urlopen(req)
         json_stats = json.load(response)
@@ -24,7 +24,7 @@ class Fed_Member(object):
     def return_dict(self):
         member_dict = {}
         member_dict['gov_id'] = self.id
-        member_dict['Typestate']='FED'
+        member_dict['typestate']='FED'
         member_dict['isValid'] = self.isValid()
         if not self.isValid():
             member_dict['given_name_alpha']= "is not a valid Federal ID"
@@ -33,9 +33,10 @@ class Fed_Member(object):
         member_dict['given_name']= self.get_name()
         member_dict['given_name_alpha']= self.get_alpha_name()
         member_dict['discharge_date']=self.get_discharge_date()
-        member_dict['facility_name']=self.get_facility()
+        member_dict['facility_name']=self.json_inmate['faclName']
         member_age = self.json_inmate['age']
         member_dict['birthday']= str(datetime.now().year-int(member_age))+'0000'
+        
         return member_dict
     
     def make_new_member(self):
@@ -44,7 +45,7 @@ class Fed_Member(object):
             
             
             
-    def is_valid(self):
+    def is_valid_id(self):
         if (len(self.id)!=8) or not self.id.isdigit(): 
             return False
         return True
@@ -62,11 +63,6 @@ class Fed_Member(object):
             return False
         return True
         
-    def get_facility(self):
-        if self.json_inmate is None:
-            return ""
-        return self.json_inmate['faclName']
-    
     def get_discharge_date(self):
         try:
             discharge_date_obj = datetime.strptime(self.json_inmate['projRelDate'],'%m/%d/%Y')

@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.utils.timezone import make_aware
 
 from django.db.models import Max
 
@@ -51,35 +52,23 @@ def update_existing(request):
 def update_searched(request):
     if request.user.is_authenticated():
         username = request.user
-        
+        entry_values = ['incarcerated_date', 'parole_date','discharge_date' ]
         for entry in request.session["search_result"]:
             if entry['isValid'] == True:
                 if Member.objects.filter(gov_id=entry['gov_id']):
                     this_member = Member.objects.get(gov_id = entry['gov_id'])
-                    try:
-                        this_release = Release.objects.filter(member=this_member).order_by('-id')[0]
-                    except:
-                        this_release=Release(parole_date=None, discharge_date=None)
-                    print "this is the discharge date" + entry['discharge_date']
-                    if entry['discharge_date'] and this_release.discharge_date != entry['discharge_date']:
-                        new_release = Release(member=this_member)
-                        new_release.save()
-                        print "release dates changed"
-                            
-                    print "exists"
+                    for value in entry_values:
+                        try:
+                            this_member.make_change(value, entry[value])
+                        except:
+                            pass
                 else:
-                    print "doesnt exists"
                     this_facility = Facility.objects.get(scraped_name=entry['facility_name'])
                     new_member = Member(facility=this_facility,created_by=username)
                     for key, value in entry.items():
                         setattr(new_member, key, value)
-#                    setattr(new_member,'created_by',username)
                     new_member.save()
                     this_member=new_member
-                    new_release= Release(member=new_member)
-                    new_release.save()
-            
-                print entry
     response = {
         'result':request.session["search_result"], 
         }    
