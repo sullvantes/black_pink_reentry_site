@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django import forms
 from django.forms import ModelForm
-from ..main.models import *
+from django.contrib.auth.models import User
+
 from ..update_release.models import *
 
 
