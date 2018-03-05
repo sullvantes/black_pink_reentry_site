@@ -17,10 +17,12 @@ from django.conf.urls import url, include
 from django.contrib import admin, auth
 
 urlpatterns = [
-#    url(r'^', include('apps.main.urls',namespace='main')),
+    # url(r'^', include('apps.main.urls',namespace='main')),
     url(r'^resources/', include('apps.resources.urls',namespace='resources')),
     url(r'^release/', include('apps.update_release.urls',namespace='release')),
     url(r'^members/', include('apps.manage_member.urls',namespace='members')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^rest/', include('apps.rest.urls',namespace='rest')),
+    
 ]

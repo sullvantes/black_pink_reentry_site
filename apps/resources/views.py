@@ -22,7 +22,7 @@ def home(request):
         user=current_user.username
         if current_user.username=='admin':
             admin = True
-    cities = Organization.objects.values('city','state').distinct()
+    cities = Resource.objects.values('city','state').distinct()
     response = {
         'username': user,
         'admin': admin,
@@ -43,7 +43,7 @@ def all_orgs(request):
         user=current_user.username
         if current_user.username=='admin':
             admin = True
-    all_resources = Organization.objects.all()
+    all_resources = Resource.objects.all()
     title = "All Resources"
     response = {
         'username': user,
@@ -66,7 +66,7 @@ def modal(request):
         user=current_user.username
         if current_user.username=='admin':
             admin = True
-    first_resource = Organization.objects.all()[0]
+    first_resource = Resource.objects.all()[0]
     title = "First Resource"
     response = {
         'username': user,
@@ -89,8 +89,8 @@ def org_home(request,org_id):
         user=current_user.username
         if current_user.username=='admin':
             admin = True
-    this_org = Organization.objects.get(id=org_id)
-    form = OrganizationForm(None, instance=this_org)
+    this_org = Resource.objects.get(id=org_id)
+    form = ResourceForm(None, instance=this_org)
     title = this_org.name + " Home"
     response = {
         'username': user,
@@ -107,15 +107,15 @@ def add_org(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = OrganizationForm(request.POST)
+        form = ResourceForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
             return redirect(reverse ('resources:all_orgs'))
 
     # if a GET (or any other method) we'll create a blank form
     else:
-            title = "Add New Organization"
-            form = OrganizationForm()
+            title = "Add New Resource"
+            form = ResourceForm()
             response = {
             'form': form,
             }

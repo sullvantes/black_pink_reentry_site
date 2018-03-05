@@ -7,19 +7,19 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 
 
-class OrganizationType(models.Model):
+class ResourceType(models.Model):
     name = models.CharField(max_length = 255)
     description = models.TextField(null=True)
-    created_by = models.ForeignKey(User, related_name = 'org_types')
+    created_by = models.ForeignKey(User, related_name = 'resource_types')
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True) 
     def __str__(self):      
         return self.name
 
 
-class Organization(models.Model):
+class Resource(models.Model):
     name = models.CharField(max_length=255)
-    org_type=models.ManyToManyField(OrganizationType)
+    resource_types=models.ManyToManyField(ResourceType)
     dedicated_to=models.TextField(null=True)
     address=models.CharField(max_length = 255, null = True)
     city=models.CharField(max_length = 55, null = True)
@@ -37,13 +37,16 @@ class Organization(models.Model):
     created_by = models.ForeignKey(User, related_name = 'resources')
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True) 
+
+    def __str__(self):
+        return self.name
     
-class OrganizationForm(forms.ModelForm):
+class ResourceForm(forms.ModelForm):
     class Meta:
-        model = Organization
-        fields = ['org_type', 'name', 'dedicated_to', 'address', 'city', 'state', 'zip_code', 'county', 'phone',  'contact_name', 'email', 'website', 'notes', 'restrictions', 'bp_contact', 'bp_supported_note']
+        model = Resource
+        fields = ['resource_types', 'name', 'dedicated_to', 'address', 'city', 'state', 'zip_code', 'county', 'phone',  'contact_name', 'email', 'website', 'notes', 'restrictions', 'bp_contact', 'bp_supported_note']
         widgets = {
-            'org_type': forms.CheckboxSelectMultiple(attrs={'id': 'inlineCheckbox', 'display':'inline'}),
+            'resource_types': forms.CheckboxSelectMultiple(attrs={'id': 'inlineCheckbox', 'display':'inline'}),
             'name': forms.TextInput(),
             'dedicated_to': forms.TextInput(attrs={}),
             'address': forms.TextInput(attrs={}),
@@ -55,8 +58,8 @@ class OrganizationForm(forms.ModelForm):
             'contact_name': forms.TextInput(attrs={}),
             'email': forms.TextInput(attrs={}),
             'website': forms.TextInput(attrs={}),
-            'notes': forms.Textarea(attrs={'placeholder': 'Please enter public notes for an individual considering this org.'}),
+            'notes': forms.Textarea(attrs={'placeholder': 'Please enter public notes for an individual considering this resource.'}),
             'restrictions': forms.Textarea(attrs={'placeholder': 'Restrictions A Member Should Know About'}),
             'bp_contact': forms.TextInput(attrs={'placeholder': 'B&P Member Contact'}),
-            'bp_supported_note': forms.Textarea(attrs={'placeholder': 'Write in here how supportive this org is of Black and Pink Fam and Values'}),
+            'bp_supported_note': forms.Textarea(attrs={'placeholder': 'Write in here how supportive this resource is of Black and Pink Fam and Values'}),
             }
