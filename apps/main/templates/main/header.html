@@ -15,18 +15,24 @@
 </head>
 <body>
         <div class="row headerRow">
-            <img id='headerImage' src='{% static "main/images/bp_logo.jpeg" %}'> 
+            <div id='headerImage' class="inlineBlock">
+            <img  src='{% static "main/images/bp_logo.jpeg" %}'> 
+            </div>
             <div class="inlineBlock page-header">
                 <h1>Black And Pink Re-Entry  <small color="pink">{% block title %}{% endblock %}</small></h1>
-              </div>
-            
-            <!-- <div class="inlineBlock headerTextTop">Black and Pink Re-Entry<br>
-            </div> -->
-            <div class = "loggedIn">
+                
+            <a href="{% url 'resources:all_orgs' %}">Resources</a>
+            <a href="{% url 'release:home' %}">Release</a>
+            <a href="#">Contact Us</a>
+                    </div>
+                    
+                  
+
+            <div id = "loggedIn">
                 {% if user.is_authenticated %}
                 <div id='logOutButton' style="position: absolute; right: 0; top: 0;">
-                <a href="{% url 'main:logout' %}"><button class="button headButton"> Logout </button></a>    
-                <p align='right'>Logged in as {{ user.get_username }}</p>
+                    <a href="{% url 'main:logout' %}"><button class="button headButton"> Logout </button></a>    
+                    <p align='right'>Logged in as {{ user.get_username }}</p>
                 </div>
                 {% else %}
                 <div id='logInButton' style="position: absolute; right: 0; top: 0;">
@@ -36,8 +42,8 @@
                         <form id = "login-form" method="post" class="navbar-form navbar-right" action="{% url 'main:login' %}" >
                         {% csrf_token %}
                         <button type="submit" align = "right" class="button headButton">Login&nbsp</button>
-                        <!-- <div><td><input type="text" name="username"></div> -->
-                        <!-- <div><td><input type="password" name="password"></td></div> -->
+                        <div><td><input type="text" name="username" style="width:85px; align: right;"></div>
+                        <div><td><input type="password" name="password" style="width:85px; align: right;"></td></div>
                         {% if form.errors %}
                         <p>Your username and password didn't match. Please try again.</p>
                         {% endif %}
@@ -46,6 +52,7 @@
                 {% endif %}
             </div>
         </div>
+        
      <div id="content">
         {% block content %}{% endblock %}
     </div>

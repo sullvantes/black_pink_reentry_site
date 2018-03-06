@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    console.log('anything')
+    console.log('What the shitttes')
 
 
     $('#showLoginForm').hide()
