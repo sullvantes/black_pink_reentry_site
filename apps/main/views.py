@@ -29,11 +29,8 @@ def login(request):
         if user is not None:
             login_funct(request,user)
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        else:
-            return render(request, 'registration/login.html')
-    else:
-        return render(request, 'registration/login.html')
-
+    return render(request, 'registration/login.html')
+    
 def logout(request):
     logout_funct(request)
     return redirect(request.META.get('HTTP_REFERER'))
