@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+ 
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% load static %}
+        <link rel="stylesheet" href='{% static "main/css/styles.css" %}'> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src='https://code.jquery.com/jquery-3.2.1.min.js'  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src='{% static "main/javascript/script.js" %}'></script>  
+   <title>Black and Pink Re-Entry</title>
+   <link rel="icon" type="image/png" href='{% static "main/favicon/BP-favicon-16x16.png" %}'>
+</head>
+<body>
+        <div class="row headerRow">
+            <img id='headerImage' src='{% static "main/images/bp_logo.jpeg" %}'> 
+            <div class="inlineBlock page-header">
+                <h1>Black And Pink Re-Entry  <small color="pink">{% block title %}{% endblock %}</small></h1>
+              </div>
+            
+            <!-- <div class="inlineBlock headerTextTop">Black and Pink Re-Entry<br>
+            </div> -->
+            <div class = "loggedIn">
+                {% if user.is_authenticated %}
+                <div id='logOutButton' style="position: absolute; right: 0; top: 0;">
+                <a href="{% url 'main:logout' %}"><button class="button headButton"> Logout </button></a>    
+                <p align='right'>Logged in as {{ user.get_username }}</p>
+                </div>
+                {% else %}
+                <div id='logInButton' style="position: absolute; right: 0; top: 0;">
+                    <button class="button headButton"> Login&nbsp </button>
+                </div>
+                <div id='showLoginForm' style="position: absolute; right: 0; top: 0;"> 
+                        <form id = "login-form" method="post" class="navbar-form navbar-right" action="{% url 'main:login' %}" >
+                        {% csrf_token %}
+                        <button type="submit" align = "right" class="button headButton">Login&nbsp</button>
+                        <!-- <div><td><input type="text" name="username"></div> -->
+                        <!-- <div><td><input type="password" name="password"></td></div> -->
+                        {% if form.errors %}
+                        <p>Your username and password didn't match. Please try again.</p>
+                        {% endif %}
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+     <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    </body>
+</html>

@@ -9,6 +9,10 @@ from django.db import models
 from models import *
 from forms import *
 
+def header(request):
+    response = {
+        }    
+    return render(request, "main/header.html",response)
 
 def home(request):
     logged_in = False

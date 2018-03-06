@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'add_org$', add_org, name = 'add_org'),
     url(r'test$', test, name = 'test'),
     url(r'modal$', modal, name = 'modal'),
+    url(r'header$', header, name = 'header'),
     ]

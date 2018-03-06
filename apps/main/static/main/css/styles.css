@@ -1,6 +1,7 @@
 *{
     margin: 0px;
     padding: 0px;
+    background-color:black;
     
 }
 
@@ -51,6 +52,9 @@
     font-size: 24px;
     margin: 2px 1px;
     cursor: pointer;
+    float: right;
+    /* position: absolute; 
+    right: 0; */
 }
 
 .bptable{

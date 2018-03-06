@@ -13,12 +13,31 @@ import json
 from django.http import JsonResponse
 from django.utils import timezone
 
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate 
+from django.contrib.auth import logout as logout_funct
+from django.contrib.auth import login as login_funct
 
 # def home(request):
 #     return redirect(reverse('resources:home'))
     
-# def login(request):
-#     return render(request, "main/login.html")
+def login(request):
+    if request.method =='POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login_funct(request,user)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            return render(request, 'registration/login.html')
+    else:
+        return render(request, 'registration/login.html')
+
+def logout(request):
+    logout_funct(request)
+    return redirect(request.META.get('HTTP_REFERER'))
+    
     
 # def authenticate(request):
 #     if request.method !='POST':
@@ -70,9 +89,6 @@ from django.utils import timezone
 # def new_user_success(request):
 #     return render(request, 'main/success.html')
 
-# def logout(request):
-#     request.session.clear()
-#     return redirect(reverse('resources:home'))
 
 
 
