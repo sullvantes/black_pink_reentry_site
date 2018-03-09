@@ -33,7 +33,7 @@ def login(request):
     
 def logout(request):
     logout_funct(request)
-    return redirect(request.META.get('HTTP_REFERER'))
+    return render(request, 'registration/logged_out.html')
     
     
 # def authenticate(request):

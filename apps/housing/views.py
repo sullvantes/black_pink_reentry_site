@@ -13,14 +13,13 @@ import sys, csv, string
 from search_address import Places
 
 def home(request):
+    request.session['nearby_locations']={}
     return render(request, "housing/home.html")
 
 def search(request):
     if request.method !="POST":
         return redirect(reverse('housing:home'))
-    # request.session['search_address']=None
-    # request.session['nearby_locations']=None
-    # request.session['valid_address']=None
+    
     search_address = request.POST['address_string']
     search_address_obj = Places(search_address)
     try:
