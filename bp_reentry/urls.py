@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^rest/', include('apps.rest.urls',namespace='rest')),
+    url(r'^housing/', include('apps.housing.urls',namespace='housing')),
     
 ]

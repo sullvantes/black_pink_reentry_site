@@ -5,6 +5,9 @@
     
 }
 
+#content{
+    padding: 60px;
+}
 #headerImage{ 
     display: inline-block;
     background-color: #000000;
@@ -16,7 +19,7 @@
     
     background-color: #000000;
     display: inline-block;
-    color:#777777;
+    color:#aaaaaa;
     float: right;
     vertical-align: top;
     
@@ -43,7 +46,7 @@
 }
 
 .headButton{
-    background-color: #777777; 
+    background-color: #aaaaaa; 
     border: none;
     color: #FA3FB4;
     padding: 5px 10px;
@@ -62,6 +65,8 @@
     color:#000000;
     /* background-color: #555555; */
 }
+
+
 
 .bptable>tbody>tr:nth-of-type(odd){background-color:#FA3FB4}
 
@@ -276,7 +281,60 @@ select,textarea {
 }
 
 
+#housing{
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 0px;
+    color: #aaaaaa;
+    font-weight: bold;
+    overflow:hidden;
+}
+
+.housingButton{
+    background-color: #aaaaaa; 
+    border: none;
+    color: #FA3FB4;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 24px;
+    margin: 8px 4px;
+    cursor: pointer;
+    /* position: absolute; 
+    right: 0; */
+}
+
+#housingSearchAgain{
+    width: 300px;
+    margin-left: auto;
+    margin-right:auto;
+    color: #aaaaaa;
+    padding-top: 60px;
+    font-weight: bold;
+    overflow:hidden;
+}
+
+#housingResultsHeader{
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 0px;
+    color: #aaaaaa;
+    font-weight: bold;
+    overflow:hidden;
+}
 
 
 
+#address-box{
+    width: 200px;
+    padding-top: 15px;
+    display: inline-block;
+    color:#FA3FB4;
+    background-color: #aaaaaa;
 
+}
+
+.card{
+    color : #aaaaaa;
+}

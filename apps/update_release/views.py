@@ -25,7 +25,9 @@ def ind_search(request):
         return redirect(reverse('release:home')) 
     id_string=request.POST['govID'].replace(',','')
     allIds = id_string.split()
+    
     request.session['search_member'] =[]
+    
     request.session['search_members'] = allIds
     request.session['new_search']=True
     return redirect(reverse('release:results'))

@@ -1,0 +1,55 @@
+{% extends 'main/header.html' %}
+
+
+{% block title %}Housing Results{% endblock %}
+
+{% block content %}
+{% if 'schools' in nearby_locations or 'parks' in nearby_locations%}
+<h2 id = 'housingResultsHeader'>Unfortunately there seems to be restrictions on <font color=#FA3FB4>{{search_address}}</font>. See below: </h2>
+{% else %}
+<h2 id = 'housingResultsHeader'><font color=#FA3FB4>{{search_address}}</font> seems to be clear of restrictions. </h2><h3>(Option for a wider search is coming soon).</h3>
+{%endif%}
+    
+        <div class="row">
+                {% if 'schools' in nearby_locations %}
+                <div class="col-sm-6">
+                  <div class="card">
+                    <div class="card-block">
+                      <h3 class="card-title">Schools Nearby</h3>
+                      {% for location, dist in nearby_locations.schools.items %}
+                      <h5 class="card-text">{{location}} is {{dist}} feet away</h5>
+                      <a href="#" class="btn  housingButton">Google it</a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% if 'parks' in nearby_locations %}
+                <div class="col-sm-6">
+                        <div class="card">
+                          <div class="card-block">
+                            <h3 class="card-title">Parks Nearby</h3>
+                            {% for location, dist in nearby_locations.parks.items %}
+                            <h5 class="card-text">{{location}} is {{dist}} feet away</h5>
+                            <a href="#" class="btn housingButton">Google it</a>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                {% endif %}
+
+        </div>
+
+    
+
+        <div id = 'housingSearchAgain'  >
+                <h3>Search Another Address</h3>   
+                <div id='housingForm'> 
+                    <form id = "housing-form" method="post" action="{% url 'housing:search' %}" >
+                    {% csrf_token %}
+                    <div ><td><input id = 'address-box' type="text" name="address_string"></div>
+                    <button type="submit" class="btn housingButton">Search</button>
+                    </form>
+                </div>
+            </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'main/header.html' %}
+
+
+{% block title %}Housing Home{% endblock %}
+
+{% block content %}
+    <div id = 'housing' >
+        <h3>Restrictive housing makes it difficult for formerly incarcerated folks to find parole locations<h3>   
+        <h4>Please enter an address to see if it's prohibited(under 500ft to school or park)</h4>
+        <div id='housingForm'> 
+            <form id = "housing-form" method="post" action="{% url 'housing:search' %}" >
+            {% csrf_token %}
+            <div ><td><input id = 'address-box' type="text" name="address_string"></div>
+            <button type="submit" class="button housingButton">Search</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
