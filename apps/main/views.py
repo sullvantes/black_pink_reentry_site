@@ -18,8 +18,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import logout as logout_funct
 from django.contrib.auth import login as login_funct
 
-# def home(request):
-#     return redirect(reverse('resources:home'))
+def home(request):
+    return render(request, 'main/header.html')
     
 def login(request):
     if request.method =='POST':

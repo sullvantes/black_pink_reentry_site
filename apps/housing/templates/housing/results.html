@@ -4,14 +4,14 @@
 {% block title %}Housing Results{% endblock %}
 
 {% block content %}
-{% if 'schools' in nearby_locations or 'parks' in nearby_locations%}
-<h2 id = 'housingResultsHeader'>Unfortunately there seems to be restrictions on <font color=#FA3FB4>{{search_address}}</font>. See below: </h2>
-{% else %}
+{% if valid_address %}
 <h2 id = 'housingResultsHeader'><font color=#FA3FB4>{{search_address}}</font> seems to be clear of restrictions. </h2><h3>(Option for a wider search is coming soon).</h3>
+{% else %}
+<h2 id = 'housingResultsHeader'>Unfortunately there seems to be restrictions on <font color=#FA3FB4>{{search_address}}</font>. See below: </h2>
 {%endif%}
     
         <div class="row">
-                {% if 'schools' in nearby_locations %}
+                {% if nearby_locations.schools %}
                 <div class="col-sm-6">
                   <div class="card">
                     <div class="card-block">
@@ -24,7 +24,7 @@
                   </div>
                 </div>
                 {% endif %}
-                {% if 'parks' in nearby_locations %}
+                {% if nearby_locations.parks %}
                 <div class="col-sm-6">
                         <div class="card">
                           <div class="card-block">

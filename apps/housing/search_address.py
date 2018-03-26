@@ -9,6 +9,7 @@ class Places(object):
     def __init__(self,addr):        
         self.api_key = 'AIzaSyA0gO64fjVBIhWSgTlyUEzihiTXPnXsh0Y'
         self.gmaps = googlemaps.Client(key=self.api_key)
+        print self.gmaps
         self.location = self.gmaps.geocode(addr)[0]
         # for key, value in self.location.iteritems():
             # print key, ':', value
@@ -32,25 +33,30 @@ class Places(object):
     def restrictive_locations(self):
         self.google_places = GooglePlaces(self.api_key)
         # Parks
-        parks = {}
+        
         query_park_result = self.google_places.nearby_search(
             location=self.full_address, radius = self.radius, types=[types.TYPE_PARK])
+        parks = {}
+        print query_park_result
         for place in query_park_result.places:
+            # print place
             place_latlong = (float(place.geo_location['lat']),float(place.geo_location['lng']))
             dist = vincenty(self.latlong, place_latlong).feet  
             parks[place.name]= int(dist)
 
         
         # Schools
-        schools = {}
         query_school_result = self.google_places.nearby_search(
             location=self.full_address, radius = self.radius, types=[types.TYPE_SCHOOL])
+        schools = {}
         for place in query_school_result.places:
             place_latlong = (float(place.geo_location['lat']),float(place.geo_location['lng']))
             dist = vincenty(self.latlong, place_latlong).feet  
             schools[place.name]= int(dist)
         
-        if query_park_result is not None or query_school_result is not None:
+        print parks
+        print schools   
+        if parks or schools:
             self.valid_address=False
         else:
             self.valid_address=True

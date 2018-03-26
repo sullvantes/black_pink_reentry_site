@@ -1,0 +1,895 @@
+{
+  "id" : "aksk-kvfp",
+  "name" : "City-Owned Land Inventory",
+  "attribution" : "Chicago Department of Planning and Development",
+  "attributionLink" : "http://www.cityofchicago.org/city/en/depts/dcd/supp_info/city-owned_land_inventory.html",
+  "averageRating" : 0,
+  "category" : "Community & Economic Development",
+  "createdAt" : 1357578222,
+  "description" : "Vacant property owned and managed by the City of Chicago Department of Planning and Development. Information provided in the database, or on the City’s website generally, should not be used as a substitute for title research, title evidence, title insurance, real estate tax exemption or payment status, environmental or geotechnical due diligence, or as a substitute for legal, accounting, real estate, business, tax or other professional advice. The City assumes no liability for any damages or loss of any kind that might arise from the reliance upon, use of, misuse of, or the inability to use the LIS database or the City’s web site and the materials contained on the website. The City also assumes no liability for improper or incorrect use of materials or information contained on its website. All materials that appear in the LIS database or on the City’s web site are distributed and transmitted \"as is,\" without warranties of any kind, either express or implied as to the accuracy, reliability or completeness of any information, and subject to the terms and conditions stated in this disclaimer.",
+  "displayType" : "table",
+  "downloadCount" : 9033,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "indexUpdatedAt" : 1507307254,
+  "newBackend" : false,
+  "numberOfComments" : 0,
+  "oid" : 12907881,
+  "provenance" : "community",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1440008806,
+  "publicationGroup" : 600426,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1440008717,
+  "rowsUpdatedBy" : "6kkk-fbsp",
+  "tableId" : 4037498,
+  "totalTimesRated" : 0,
+  "viewCount" : 134112,
+  "viewLastModified" : 1507307164,
+  "viewType" : "tabular",
+  "columns" : [ {
+    "id" : 218220839,
+    "name" : "14-Digit PIN #",
+    "dataTypeName" : "text",
+    "description" : "Property Index Number",
+    "fieldName" : "digit_pin",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 6711106,
+    "width" : 144,
+    "cachedContents" : {
+      "largest" : "26-32-302-041-0000",
+      "non_null" : 12986,
+      "null" : 0,
+      "top" : [ {
+        "item" : "26-30-406-015-0000",
+        "count" : 20
+      }, {
+        "item" : "26-30-406-018-0000",
+        "count" : 19
+      }, {
+        "item" : "26-30-406-019-0000",
+        "count" : 18
+      }, {
+        "item" : "26-30-406-020-0000",
+        "count" : 17
+      }, {
+        "item" : "26-30-406-021-0000",
+        "count" : 16
+      }, {
+        "item" : "26-30-408-001-0000",
+        "count" : 15
+      }, {
+        "item" : "26-30-408-002-0000",
+        "count" : 14
+      }, {
+        "item" : "26-30-409-017-0000",
+        "count" : 13
+      }, {
+        "item" : "26-30-412-054-0000",
+        "count" : 12
+      }, {
+        "item" : "26-30-414-006-0000",
+        "count" : 11
+      }, {
+        "item" : "26-30-414-007-0000",
+        "count" : 10
+      }, {
+        "item" : "26-31-100-007-0000",
+        "count" : 9
+      }, {
+        "item" : "26-31-116-017-0000",
+        "count" : 8
+      }, {
+        "item" : "26-31-203-017-0000",
+        "count" : 7
+      }, {
+        "item" : "26-31-204-033-0000",
+        "count" : 6
+      }, {
+        "item" : "26-31-206-007-0000",
+        "count" : 5
+      }, {
+        "item" : "26-31-206-008-0000",
+        "count" : 4
+      }, {
+        "item" : "26-31-209-022-0000",
+        "count" : 3
+      }, {
+        "item" : "26-31-210-002-0000",
+        "count" : 2
+      }, {
+        "item" : "26-31-211-023-0000",
+        "count" : 1
+      } ],
+      "smallest" : "10-36-228-040-0000"
+    },
+    "format" : {
+      "displayStyle" : "plain",
+      "align" : "left",
+      "aggregate" : "count"
+    }
+  }, {
+    "id" : 218220840,
+    "name" : "Street Number",
+    "dataTypeName" : "text",
+    "fieldName" : "street_number",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 6711107,
+    "width" : 124,
+    "cachedContents" : {
+      "largest" : "9961",
+      "non_null" : 12929,
+      "null" : 57,
+      "top" : [ {
+        "item" : "12600",
+        "count" : 20
+      }, {
+        "item" : "12601",
+        "count" : 19
+      }, {
+        "item" : "12650",
+        "count" : 18
+      }, {
+        "item" : "12757",
+        "count" : 17
+      }, {
+        "item" : "12713",
+        "count" : 16
+      }, {
+        "item" : "12701",
+        "count" : 15
+      }, {
+        "item" : "12715",
+        "count" : 14
+      }, {
+        "item" : "13504",
+        "count" : 13
+      }, {
+        "item" : "13610",
+        "count" : 12
+      }, {
+        "item" : "13401",
+        "count" : 11
+      } ],
+      "smallest" : "0"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 218220841,
+    "name" : "Dir.",
+    "dataTypeName" : "text",
+    "description" : "Street Direction",
+    "fieldName" : "d",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 6711108,
+    "width" : 61,
+    "cachedContents" : {
+      "largest" : "W.",
+      "non_null" : 12922,
+      "null" : 64,
+      "top" : [ {
+        "item" : "N",
+        "count" : 20
+      }, {
+        "item" : "W",
+        "count" : 19
+      }, {
+        "item" : "S",
+        "count" : 18
+      }, {
+        "item" : "N.",
+        "count" : 17
+      }, {
+        "item" : "E",
+        "count" : 16
+      }, {
+        "item" : "W.",
+        "count" : 15
+      }, {
+        "item" : "S.",
+        "count" : 14
+      }, {
+        "item" : "E.",
+        "count" : 13
+      } ],
+      "smallest" : "E"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 218220842,
+    "name" : "Street Name",
+    "dataTypeName" : "text",
+    "fieldName" : "street_name",
+    "position" : 4,
+    "renderTypeName" : "text",
+    "tableColumnId" : 6711109,
+    "width" : 124,
+    "cachedContents" : {
+      "largest" : "YATES",
+      "non_null" : 12936,
+      "null" : 50,
+      "top" : [ {
+        "item" : "HALSTED",
+        "count" : 20
+      }, {
+        "item" : "63RD",
+        "count" : 19
+      }, {
+        "item" : "79TH",
+        "count" : 18
+      }, {
+        "item" : "BURLEY",
+        "count" : 17
+      }, {
+        "item" : "MICHIGAN",
+        "count" : 16
+      }, {
+        "item" : "EDBROOKE",
+        "count" : 15
+      }, {
+        "item" : "110TH",
+        "count" : 14
+      }, {
+        "item" : "119TH",
+        "count" : 13
+      }, {
+        "item" : "PAXTON",
+        "count" : 12
+      }, {
+        "item" : "LUELLA",
+        "count" : 11
+      }, {
+        "item" : "CRANDON",
+        "count" : 10
+      }, {
+        "item" : "OGLESBY",
+        "count" : 9
+      }, {
+        "item" : "120TH",
+        "count" : 8
+      }, {
+        "item" : "UNION",
+        "count" : 7
+      }, {
+        "item" : "134TH",
+        "count" : 6
+      }, {
+        "item" : "MARYLAND",
+        "count" : 5
+      }, {
+        "item" : "135TH",
+        "count" : 4
+      }, {
+        "item" : "BUFFALO",
+        "count" : 3
+      }, {
+        "item" : "MACKINAW",
+        "count" : 2
+      }, {
+        "item" : "GREEN BAY",
+        "count" : 1
+      } ],
+      "smallest" : "100TH"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 218220843,
+    "name" : "Type",
+    "dataTypeName" : "text",
+    "description" : "Street Type",
+    "fieldName" : "type",
+    "position" : 5,
+    "renderTypeName" : "text",
+    "tableColumnId" : 6711110,
+    "width" : 50,
+    "cachedContents" : {
+      "largest" : "TER",
+      "non_null" : 11990,
+      "null" : 996,
+      "top" : [ {
+        "item" : "ST",
+        "count" : 20
+      }, {
+        "item" : "AV",
+        "count" : 19
+      }, {
+        "item" : "AVE",
+        "count" : 18
+      }, {
+        "item" : "TER",
+        "count" : 17
+      }, {
+        "item" : "RD",
+        "count" : 16
+      }, {
+        "item" : "PL",
+        "count" : 15
+      }, {
+        "item" : "PK",
+        "count" : 14
+      }, {
+        "item" : "BLVD",
+        "count" : 13
+      }, {
+        "item" : "PKWY",
+        "count" : 12
+      }, {
+        "item" : "BL",
+        "count" : 11
+      }, {
+        "item" : "CT",
+        "count" : 10
+      }, {
+        "item" : "DR",
+        "count" : 9
+      }, {
+        "item" : "EXT",
+        "count" : 8
+      } ],
+      "smallest" : "AV"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 218220844,
+    "name" : "Sq. Ft.",
+    "dataTypeName" : "number",
+    "description" : "Parcel Square Footage",
+    "fieldName" : "sq_ft",
+    "position" : 6,
+    "renderTypeName" : "number",
+    "tableColumnId" : 6711115,
+    "width" : 78,
+    "cachedContents" : {
+      "largest" : "1911090",
+      "non_null" : 12986,
+      "average" : "5699.452564300015",
+      "null" : 0,
+      "top" : [ {
+        "item" : "3125",
+        "count" : 20
+      }, {
+        "item" : "3127",
+        "count" : 19
+      }, {
+        "item" : "3161",
+        "count" : 18
+      }, {
+        "item" : "3121",
+        "count" : 17
+      }, {
+        "item" : "3088",
+        "count" : 16
+      }, {
+        "item" : "3089",
+        "count" : 15
+      }, {
+        "item" : "2150",
+        "count" : 14
+      }, {
+        "item" : "2814",
+        "count" : 13
+      }, {
+        "item" : "2506",
+        "count" : 12
+      }, {
+        "item" : "3137",
+        "count" : 11
+      }, {
+        "item" : "3140",
+        "count" : 10
+      }, {
+        "item" : "2887",
+        "count" : 9
+      }, {
+        "item" : "13793",
+        "count" : 8
+      }, {
+        "item" : "29553",
+        "count" : 7
+      }, {
+        "item" : "14883",
+        "count" : 6
+      } ],
+      "smallest" : "0",
+      "sum" : "74013091"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "left"
+    }
+  }, {
+    "id" : 218220845,
+    "name" : "Ward",
+    "dataTypeName" : "number",
+    "fieldName" : "ward",
+    "position" : 7,
+    "renderTypeName" : "number",
+    "tableColumnId" : 6711111,
+    "width" : 64,
+    "cachedContents" : {
+      "largest" : "50",
+      "non_null" : 12982,
+      "average" : "17.59451548297643",
+      "null" : 4,
+      "top" : [ {
+        "item" : "49",
+        "count" : 20
+      }, {
+        "item" : "45",
+        "count" : 19
+      }, {
+        "item" : "39",
+        "count" : 18
+      }, {
+        "item" : "35",
+        "count" : 17
+      }, {
+        "item" : "30",
+        "count" : 16
+      }, {
+        "item" : "32",
+        "count" : 15
+      }, {
+        "item" : "29",
+        "count" : 14
+      }, {
+        "item" : "37",
+        "count" : 13
+      }, {
+        "item" : "26",
+        "count" : 12
+      }, {
+        "item" : "1",
+        "count" : 11
+      }, {
+        "item" : "47",
+        "count" : 10
+      }, {
+        "item" : "2",
+        "count" : 9
+      }, {
+        "item" : "27",
+        "count" : 8
+      }, {
+        "item" : "28",
+        "count" : 7
+      }, {
+        "item" : "24",
+        "count" : 6
+      }, {
+        "item" : "12",
+        "count" : 5
+      }, {
+        "item" : "22",
+        "count" : 4
+      }, {
+        "item" : "42",
+        "count" : 3
+      }, {
+        "item" : "4",
+        "count" : 2
+      }, {
+        "item" : "25",
+        "count" : 1
+      } ],
+      "smallest" : "1",
+      "sum" : "228412"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "left"
+    }
+  }, {
+    "id" : 218220846,
+    "name" : "Community Area",
+    "dataTypeName" : "text",
+    "fieldName" : "community_area",
+    "position" : 8,
+    "renderTypeName" : "text",
+    "tableColumnId" : 6711112,
+    "width" : 117,
+    "cachedContents" : {
+      "largest" : "WOODLAWN",
+      "non_null" : 12986,
+      "null" : 0,
+      "top" : [ {
+        "item" : "LOGAN SQUARE",
+        "count" : 20
+      }, {
+        "item" : "AUSTIN",
+        "count" : 19
+      }, {
+        "item" : "HUMBOLDT PARK",
+        "count" : 18
+      }, {
+        "item" : "WEST TOWN",
+        "count" : 17
+      }, {
+        "item" : "WEST GARFIELD PARK",
+        "count" : 16
+      }, {
+        "item" : "EAST GARFIELD PARK",
+        "count" : 15
+      }, {
+        "item" : "NEAR WEST SIDE",
+        "count" : 14
+      }, {
+        "item" : "NORTH LAWNDALE",
+        "count" : 13
+      }, {
+        "item" : "SOUTH LAWNDALE",
+        "count" : 12
+      }, {
+        "item" : "LOWER WEST SIDE",
+        "count" : 11
+      }, {
+        "item" : "DOUGLAS",
+        "count" : 10
+      }, {
+        "item" : "BRIDGEPORT",
+        "count" : 9
+      }, {
+        "item" : "OAKLAND",
+        "count" : 8
+      }, {
+        "item" : "CHICAGO LAWN",
+        "count" : 7
+      }, {
+        "item" : "ASHBURN",
+        "count" : 6
+      }, {
+        "item" : "KENWOOD",
+        "count" : 5
+      }, {
+        "item" : "GRAND BOULEVARD",
+        "count" : 4
+      }, {
+        "item" : "NEW CITY",
+        "count" : 3
+      }, {
+        "item" : "FULLER PARK",
+        "count" : 2
+      }, {
+        "item" : "WASHINGTON PARK",
+        "count" : 1
+      } ],
+      "smallest" : "ALBANY PARK"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 218220847,
+    "name" : "Zoning Classification",
+    "dataTypeName" : "text",
+    "fieldName" : "zoning_classification",
+    "position" : 9,
+    "renderTypeName" : "text",
+    "tableColumnId" : 6711114,
+    "width" : 151,
+    "cachedContents" : {
+      "largest" : "T",
+      "non_null" : 12986,
+      "null" : 0,
+      "top" : [ {
+        "item" : "RS-3",
+        "count" : 20
+      }, {
+        "item" : "RT-4",
+        "count" : 19
+      }, {
+        "item" : "B1-1",
+        "count" : 18
+      }, {
+        "item" : "C1-3",
+        "count" : 17
+      }, {
+        "item" : "B3-1",
+        "count" : 16
+      }, {
+        "item" : "B3-2",
+        "count" : 15
+      }, {
+        "item" : "M1-1",
+        "count" : 14
+      }, {
+        "item" : "C1-1",
+        "count" : 13
+      }, {
+        "item" : "B3-3",
+        "count" : 12
+      }, {
+        "item" : "M1-2",
+        "count" : 11
+      }, {
+        "item" : "C1-2",
+        "count" : 10
+      }, {
+        "item" : "RM-5",
+        "count" : 9
+      }, {
+        "item" : "PMD 9",
+        "count" : 8
+      }, {
+        "item" : "M1-3",
+        "count" : 7
+      }, {
+        "item" : "PMD 4",
+        "count" : 6
+      }, {
+        "item" : "PD 30",
+        "count" : 5
+      }, {
+        "item" : "PD 1133",
+        "count" : 4
+      }, {
+        "item" : "POS-2",
+        "count" : 3
+      }, {
+        "item" : "RS-2",
+        "count" : 2
+      }, {
+        "item" : "PD 723",
+        "count" : 1
+      } ],
+      "smallest" : "B1-1"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 218220848,
+    "name" : "TIF District",
+    "dataTypeName" : "text",
+    "description" : "Tax Increment Financing District",
+    "fieldName" : "tif_name_area",
+    "position" : 10,
+    "renderTypeName" : "text",
+    "tableColumnId" : 6711113,
+    "width" : 94,
+    "cachedContents" : {
+      "largest" : "Woodlawn",
+      "non_null" : 12986,
+      "null" : 0,
+      "top" : [ {
+        "item" : "NOT IN TIF",
+        "count" : 20
+      }, {
+        "item" : "Northwest Industrial Corridor",
+        "count" : 19
+      }, {
+        "item" : "Kinzie Industrial Corridor",
+        "count" : 18
+      }, {
+        "item" : "Chicago/Central Park",
+        "count" : 17
+      }, {
+        "item" : "Madison/Austin",
+        "count" : 16
+      }, {
+        "item" : "Midwest",
+        "count" : 15
+      }, {
+        "item" : "Western/Ogden Ind. Corridor",
+        "count" : 14
+      }, {
+        "item" : "Roosevelt-Cicero Ind. Corridor",
+        "count" : 13
+      }, {
+        "item" : "Ogden/Pulaski",
+        "count" : 12
+      }, {
+        "item" : "Central West",
+        "count" : 11
+      }, {
+        "item" : "Bronzeville",
+        "count" : 10
+      }, {
+        "item" : "Madden/Wells",
+        "count" : 9
+      }, {
+        "item" : "43rd/Cottage Grove",
+        "count" : 8
+      }, {
+        "item" : "47th/King",
+        "count" : 7
+      }, {
+        "item" : "47th/Halsted",
+        "count" : 6
+      }, {
+        "item" : "47th/Ashland",
+        "count" : 5
+      }, {
+        "item" : "63rd/Ashland",
+        "count" : 4
+      }, {
+        "item" : "47th/State",
+        "count" : 3
+      }, {
+        "item" : "Woodlawn",
+        "count" : 2
+      }, {
+        "item" : "Washington Park",
+        "count" : 1
+      } ],
+      "smallest" : "105th/Vincennes"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 218220849,
+    "name" : "Location",
+    "dataTypeName" : "location",
+    "fieldName" : "location",
+    "position" : 11,
+    "renderTypeName" : "location",
+    "tableColumnId" : 22539926,
+    "width" : 69,
+    "cachedContents" : {
+      "largest" : {
+        "latitude" : "41.712349",
+        "human_address" : "{\"address\":\"9961 S CHARLES\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+        "longitude" : "-87.660941"
+      },
+      "non_null" : 12929,
+      "null" : 57,
+      "top" : [ {
+        "item" : {
+          "human_address" : "{\"address\":\"12650 S BALTIMORE AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}"
+        },
+        "count" : 20
+      }, {
+        "item" : {
+          "human_address" : "{\"address\":\"12651 S BALTIMORE AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}"
+        },
+        "count" : 19
+      }, {
+        "item" : {
+          "latitude" : "41.66443",
+          "human_address" : "{\"address\":\"12701 S CARONDOLET AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.549548"
+        },
+        "count" : 18
+      }, {
+        "item" : {
+          "latitude" : "41.663033",
+          "human_address" : "{\"address\":\"12757 S CARONDOLET AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.549554"
+        },
+        "count" : 17
+      }, {
+        "item" : {
+          "latitude" : "41.664335",
+          "human_address" : "{\"address\":\"12713 S CARONDOLET AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.549548"
+        },
+        "count" : 16
+      }, {
+        "item" : {
+          "latitude" : "41.664285",
+          "human_address" : "{\"address\":\"12715 S CARONDOLET AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.549549"
+        },
+        "count" : 15
+      }, {
+        "item" : {
+          "latitude" : "41.649854",
+          "human_address" : "{\"address\":\"13504 S BALTIMORE AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.547175"
+        },
+        "count" : 14
+      }, {
+        "item" : {
+          "latitude" : "41.649222",
+          "human_address" : "{\"address\":\"13527 S BRANDON AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.545947"
+        },
+        "count" : 13
+      }, {
+        "item" : {
+          "latitude" : "41.648724",
+          "human_address" : "{\"address\":\"13543 S BRANDON AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.545955"
+        },
+        "count" : 12
+      }, {
+        "item" : {
+          "latitude" : "41.648448",
+          "human_address" : "{\"address\":\"13553 S BRAINARD AVE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.545894"
+        },
+        "count" : 11
+      }, {
+        "item" : {
+          "latitude" : "41.648195",
+          "human_address" : "{\"address\":\"3249 E 136 ST\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.54404"
+        },
+        "count" : 10
+      }, {
+        "item" : {
+          "human_address" : "{\"address\":\"13610 S AVENUE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}"
+        },
+        "count" : 9
+      }, {
+        "item" : {
+          "latitude" : "41.651847",
+          "human_address" : "{\"address\":\"13401 S AVENUE\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}",
+          "longitude" : "-87.538695"
+        },
+        "count" : 8
+      } ],
+      "smallest" : {
+        "human_address" : "{\"address\":\"0 115TH ST\",\"city\":\"CHICAGO\",\"state\":\"IL\",\"zip\":\"\"}"
+      }
+    },
+    "format" : {
+      "view" : "coords",
+      "align" : "left"
+    },
+    "subColumnTypes" : [ "human_address", "latitude", "longitude", "machine_address", "needs_recoding" ]
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "jsonQuery" : {
+      "order" : [ {
+        "ascending" : true,
+        "columnFieldName" : "digit_pin"
+      } ]
+    },
+    "rdfSubject" : "0",
+    "custom_fields" : {
+      "Metadata" : {
+        "Data Owner" : "Chicago Department of Planning and Development"
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    }
+  },
+  "owner" : {
+    "id" : "cnc2-ak5q",
+    "displayName" : "PLS",
+    "screenName" : "PLS",
+    "type" : "interactive"
+  },
+  "query" : {
+    "orderBys" : [ {
+      "ascending" : true,
+      "expression" : {
+        "columnId" : 218220839,
+        "type" : "column"
+      }
+    } ]
+  },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "cnc2-ak5q",
+    "displayName" : "PLS",
+    "screenName" : "PLS",
+    "type" : "interactive"
+  },
+  "tags" : [ "city-owned vacant land" ],
+  "flags" : [ "default", "restorable", "restorePossibleForType" ]
+}
