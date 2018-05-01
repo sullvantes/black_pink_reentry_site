@@ -29,12 +29,11 @@ def login(request):
         if user is not None:
             login_funct(request,user)
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    return render(request, 'registration/login.html')
+    return redirect(reverse('main:home'))
     
 def logout(request):
     logout_funct(request)
-    return render(request, 'registration/logged_out.html')
-    
+    return redirect(reverse('main:home'))
     
 # def authenticate(request):
 #     if request.method !='POST':

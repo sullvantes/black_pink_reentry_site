@@ -5,51 +5,53 @@
 
 {% block content %}
 {% if valid_address %}
-<h2 id = 'housingResultsHeader'><font color=#FA3FB4>{{search_address}}</font> seems to be clear of restrictions. </h2><h3>(Option for a wider search is coming soon).</h3>
+<h5 id = 'housingResultsHeader'><span class="address">{{search_address}}</span> seems to be clear of restrictions. </h2><h3>(Option for a wider search is coming soon).</h3>
 {% else %}
-<h2 id = 'housingResultsHeader'>Unfortunately there seems to be restrictions on <font color=#FA3FB4>{{search_address}}</font>. See below: </h2>
+<h5 id = 'housingResultsHeader'>Unfortunately there seems to be restrictions on <span class="address">{{search_address}}</span>. See below: </h2>
 {%endif%}
     
-        <div class="row">
-                {% if nearby_locations.schools %}
-                <div class="col-sm-6">
-                  <div class="card">
-                    <div class="card-block">
-                      <h3 class="card-title">Schools Nearby</h3>
-                      {% for location, dist in nearby_locations.schools.items %}
-                      <h5 class="card-text">{{location}} is {{dist}} feet away</h5>
-                      <a href="#" class="btn  housingButton">Google it</a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-                {% endif %}
-                {% if nearby_locations.parks %}
-                <div class="col-sm-6">
-                        <div class="card">
-                          <div class="card-block">
-                            <h3 class="card-title">Parks Nearby</h3>
-                            {% for location, dist in nearby_locations.parks.items %}
-                            <h5 class="card-text">{{location}} is {{dist}} feet away</h5>
-                            <a href="#" class="btn housingButton">Google it</a>
-                            {% endfor %}
-                          </div>
-                        </div>
-                      </div>
-                {% endif %}
-
+  <div class="row">
+    {% if nearby_locations.schools %}
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-block">
+          <h5 class="card-title">Schools Nearby:</h5>
+          {% for location, dist in nearby_locations.schools.items %}
+          <p class="card-text">{{location}} is {{dist}} feet away.</p>
+          <a href="https://www.google.com/maps/place/{{location|slugify}}" class="btn headButton">Google it</a>
+          {% endfor %}
         </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if nearby_locations.parks %}
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-block">
+          <h5 class="card-title">Parks Nearby:</h5>
+          {% for location, dist in nearby_locations.parks.items %}
+          <p class="card-text">{{location}} is {{dist}} feet away.</p>
+          <a href="https://www.google.com/maps/place/{{location|slugify}}" class="btn headButton">Google it</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
 
     
 
         <div id = 'housingSearchAgain'  >
-                <h3>Search Another Address</h3>   
-                <div id='housingForm'> 
-                    <form id = "housing-form" method="post" action="{% url 'housing:search' %}" >
-                    {% csrf_token %}
-                    <div ><td><input id = 'address-box' type="text" name="address_string"></div>
-                    <button type="submit" class="btn housingButton">Search</button>
-                    </form>
-                </div>
-            </div>
+          <h5>Search Another Address</h5>   
+          <div id='housingForm'> 
+            <form action="{% url 'housing:search' %}" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <textarea class="form-control" rows="5" id="comment" name="address_string"></textarea>
+              </div> 
+              <input class = "headButton" type="submit" value="Submit">
+            </form>
+          </div>
+      </div>
 {% endblock %}

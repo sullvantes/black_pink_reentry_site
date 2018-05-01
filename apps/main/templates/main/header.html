@@ -6,35 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% load static %}
         <link rel="stylesheet" href='{% static "main/css/styles.css" %}'> 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src='https://code.jquery.com/jquery-3.2.1.min.js'  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src='{% static "main/javascript/script.js" %}'></script>  
    <title>Black and Pink Re-Entry</title>
    <link rel="icon" type="image/png" href='{% static "main/favicon/BP-favicon-16x16.png" %}'>
 </head>
-<body>
-        <div class="row headerRow">
-            <img src='{% static "main/images/bp_logo.jpeg" %}' id = "header-image" class="image-fluid float-left" alt="">
-            <div class="page-header">
-                <h1>Black And Pink <span>Re-Entry<span>  <small color="pink">{% block title %} Chicago Home{% endblock %}</small></h1>
+<body id='bp-body'>  
+        <div class = "row">
+            <div class="col-sm-8 col-xs-12">
+                <img src='{% static "main/images/bp_logo.jpeg" %}' id="bp-img" class="d-inline-block align-top" alt="">
+                <h1 id = "bp-title">Black And Pink <span> Re-Entry</span><small id="small-title-text" > {% block title %}{% endblock %} </small></h3>
             </div>
-            <div id = "loggedIn">
+            <div class="col-sm-4 col-xs-12">
                 {% if user.is_authenticated %}
-                <div id='logOutButton' style="position: absolute; right: 0; top: 0;">
-                    <a href="{% url 'main:logout' %}"><button class="button headButton"> Logout </button></a>    
-                    <p align='right'>Logged in as {{ user.get_username }}</p>
+                <div id='logOutButton'>
+                        <a class="btn headButton" href="{% url 'main:logout' %}" role="button">Logout</a>
+                    
+                    <p>Logged in as {{ user.get_username }}</p>
                 </div>
                 {% else %}
-                <div id='logInButton' style="position: absolute; right: 0; top: 0;">
-                    <button class="button headButton"> Login&nbsp </button>
+                <div id='logInButton'>
+                    <button class="btn headButton"> Login </button>
                 </div>
-                <div id='showLoginForm' style="position: absolute; right: 0; top: 0;"> 
-                        <form id = "login-form" method="post" class="navbar-form navbar-right" action="{% url 'main:login' %}" >
+                <div id='showLoginForm'> 
+                        <form id = "login-form" method="post" action="{% url 'main:login' %}" >
                         {% csrf_token %}
-                        <button type="submit" align = "right" class="button headButton">Login&nbsp</button>
-                        <div><td><input type="text" name="username" style="width:85px; align: right;"></div>
-                        <div><td><input type="password" name="password" style="width:85px; align: right;"></td></div>
+                        <button type="submit" class="btn headButton"> Login </button>
+                        <div id = "input-fields">
+                            <input type="text" name="username">
+                            <input type="password" name="password">
+                        </div>
                         {% if form.errors %}
                         <p>Your username and password didn't match. Please try again.</p>
                         {% endif %}
@@ -43,48 +48,60 @@
                 {% endif %}
             </div>
         </div>
-
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                  <!-- Brand and toggle get grouped for better mobile display -->
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                  </div>
-              
-                  <!-- Collect the nav links, forms, and other content for toggling -->
-                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Resources<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{% url 'resources:home' %}">Home</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">About</a></li>
-                            </ul>
-                            </li>
-                        <li class="active"><a href="{% url 'housing:home' %}">Housing Restrictions<span class="sr-only">(current)</span></a></li>
-                      <li class="dropdown">
-                        <a href="{% url 'release:home' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Release<span class="caret"></span></a>
-                      </li>
-                      {% if user.is_authenticated %}
-                      <li><a href="#">Members</a></li>
-                      {% endif %}
-                    </ul>
-                  </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
-              </nav>
-
-
-
-        </div>
+        <nav class="bp-nav navbar navbar-expand-lg navbar-light">
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
         
-     <div id="content">
-        {% block content %}Welcome Home. This is Black and Pink Chicago's Re-Entry Support and Resource Page{% endblock %}
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Resources
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{% url 'resources:home' %}">Home</a>
+                  <a class="dropdown-item" href="{% url 'resources:home' %}">Search</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'resources:home' %}">Add</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:home' %}">Housing Restrictions</a>
+                  </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'release:home' %}">Release Information</a>
+              </li>
+            
+              {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="{% url 'resources:home' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Members
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </li>
+              
+              {% else %}
+              <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Members</a>
+                  </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+           
+          
+        
+
+     <div id="content" class="container">
+        {% block content %}
+        {% endblock %}
     </div>
     </body>
 </html>

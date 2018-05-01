@@ -1,87 +1,128 @@
-*{
+/* *{
+    margin: 0px;
+    padding: 0px;
+    background-color:pink;
+    color:#aaaaaa;
+    border-color: black;
+    border-width:0px
+    
+} */
+
+#bp-body {
     margin: 0px;
     padding: 0px;
     background-color:black;
+    color:#aaaaaa;
+    border-color: black;
+    border-width:0px;
+}
+
+#bp-img {
+    max-width:15%; 
+    height:auto;
+
+}
+#bp-title {
+    max-height:100%;
+    font-size:3vw;
+    color:#aaaaaa;
+    display:inline-block;
+    position: relative;
+    height: 100px;
+    line-height: 100px;
+    white-space: nowrap;
     
 }
 
-#content{
-    padding: 60px;
+button.navbar-toggler{
+    color: black;
+    background-color: #FA3FB4;
+    align-content: right;
 }
-/* #headerImage{ 
-    display: inline-block;
-    /* background-color: #000000; */
-    /* width:100px; */
-    /* vertical-align: top;   */
-    display: flex;
-    } */
 
-/* #headerImage img{
-    flex-shrink: 0;
-    min-width: 10%;
-    min-height: 10%
+a {
+    color:#aaaaaa !important;
+}
+
+#small-title-text{
+    color:#FA3FB4;
+}
+
+.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+    color: #aaaaaa;
+}
+/* .bp-nav {
+    color:#aaaaaa;
+    background-color: black;
 } */
-#header-image{
-    width : 10px;
-}
-
-h1 span{
-    display:inline-block;
-}
 
 #loggedIn{
     
     background-color: #000000;
-    display: inline-block;
-    color:#aaaaaa;
-    float: right;
+    display: inline;
+    color:#666666;
+    /* float: right; */
     vertical-align: top;
-    
-    padding: 5px 10px;
+    width: 100%;
+    height: auto;
+    padding:10px 10px;
 }
-.headerTextTop{
-    font-size: 50px ;
-    width:50%;
+
+span.address {
     color:#FA3FB4;
-    background-color: #000000;
-    padding-top: 1em;
-    text-align: center;
-}
-
-.headerRow{
-      background-color: #000000;
-      vertical-align: center;
-      padding: 20px;
-}
-
-
-.inlineBlock{
     display: inline-block;
-    background-color: #000000;
+
 }
+
+.container-fluid {
+    border-color: transparent;
+}
+
+
+#nav-container {
+    border-color: transparent;
+}
+
+#logOutButton, #logInButton, #input-fields, #showLoginForm, #login-form{
+    float: right;
+    clear: right;
+    max-width: 100%;
+    font-size:2vw;
+    display: block;
+}
+
+
 
 .headButton{
     background-color: #aaaaaa; 
     border: none;
-    color: #FA3FB4;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 24px;
-    margin: 2px 1px;
+    color: #FA3FB4 !important;
+    padding: 4px 4px;
+    /* text-align: center; */
+    font-size: 2vw;
+    margin: 10px 10px;
     cursor: pointer;
     float: right;
-    /* position: absolute; 
-    right: 0; */
+    clear: both;
+    align-content: right;
+    /* float: right; */
+}
+
+.card-block{
+    color: #495057;
+    background-color:white;
+}
+
+.col-xs-3 img {
+    flex-shrink: 0;
+    max-width: 100%;
+    /* min-height: 100%; */
 }
 
 .bptable{
     color:#000000;
     /* background-color: #555555; */
 }
-
-
 
 .bptable>tbody>tr:nth-of-type(odd){background-color:#FA3FB4}
 
@@ -99,7 +140,7 @@ h1 span{
     color:#FA3FB4;
     align-content: center;
     text-align: center
-    display: inline-block;
+    display: inline;
 }
 
 label
@@ -108,7 +149,7 @@ label
     color: #FA3FB4;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: inline;
     font-size: 24px;
     margin: 2px 1px;
     cursor: pointer;
@@ -117,18 +158,6 @@ label
 
 
 
-/* input[type="text"] {
-    width: 30%;
-    font-size: 24px;
-    display: block;
-    margin-bottom: 10px;
-    background-color: #FFFFFF; 
-    border: none;
-    color: #FA3FB4;
-    text-align: center;
-    float: center;
-} 
-*/
 select,textarea { 
     display: block; 
     margin: 0 auto; 
@@ -146,7 +175,7 @@ select,textarea {
     font-size: 0px;
 }
 
-#inlineCheckbox ul li { display: inline-block;}
+#inlineCheckbox ul li { display: inline;}
 
 
 .resourceContainer{
@@ -175,7 +204,7 @@ select,textarea {
 }
 
 .resourceTitleHeader{
-    display: inline-block;
+    display: inline;
     margin-left: 10px;
     margin-bottom: 0px;
     color: #085F99;
@@ -187,7 +216,7 @@ select,textarea {
     width: 95px;
     height: 95px;
     padding-top: 15px;
-    display: inline-block;
+    display: inline;
 }
 .resourceLoc{
     width: 95px;
@@ -197,7 +226,7 @@ select,textarea {
 }
 
 .resourceDetails{
-    display: inline-block;
+    display: inline;
     margin-left: 5px;
     padding-right: 10px;
     vertical-align: top;
@@ -274,7 +303,7 @@ select,textarea {
 }
 
 .facilityTitleHeader{
-    display: inline-block;
+    display: inline;
     margin-left: 10px;
     margin-bottom: 0px;
     color: #085F99;
@@ -286,7 +315,7 @@ select,textarea {
     width: 95px;
     height: 95px;
     padding-top: 15px;
-    display: inline-block;
+    display: inline;
 }
 .facilityLoc{
     width: 95px;
@@ -297,7 +326,7 @@ select,textarea {
 
 
 #housing{
-    display: inline-block;
+    display: inline;
     margin-left: 10px;
     margin-bottom: 0px;
     color: #aaaaaa;
@@ -312,7 +341,7 @@ select,textarea {
     padding: 5px 10px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: inline;
     font-size: 24px;
     margin: 8px 4px;
     cursor: pointer;
@@ -331,7 +360,7 @@ select,textarea {
 }
 
 #housingResultsHeader{
-    display: inline-block;
+    display: inline;
     margin-left: 10px;
     margin-bottom: 0px;
     color: #aaaaaa;
@@ -344,7 +373,7 @@ select,textarea {
 #address-box{
     width: 200px;
     padding-top: 15px;
-    display: inline-block;
+    display: inline;
     color:#FA3FB4;
     background-color: #aaaaaa;
 
@@ -352,38 +381,4 @@ select,textarea {
 
 .card{
     color : #aaaaaa;
-}
-
-
-
-
-
-
- html {
-    font-size: 1rem;
-  }
-
-
-  @media (min-width: 400px) {
-    .mobile-hide{
-        display: none;
-        margin-top: 10px;
-    }
-
-    h1 {
-        font-size: .4rem;
-      }
-
- }
- 
- @media (min-width: 700px) {
-    .mobile-hide {
-        display: inline-block;
-    }
-  
-    h1 {
-        font-size: 1rem;
-      }
-  }
-  
-  
+} 
