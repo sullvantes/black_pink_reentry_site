@@ -62,7 +62,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="{% url 'resources:home' %}">Home</a>
-                  <a class="dropdown-item" href="{% url 'resources:home' %}">Search</a>
+                  <a class="dropdown-item" href="{% url 'resources:add_resource' %}">Add Resource</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="{% url 'resources:home' %}">Add</a>
                 </div>
@@ -76,11 +76,11 @@
             
               {% if user.is_authenticated %}
               <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{% url 'resources:home' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="{% url 'members:home' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Members
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="{% url 'members:home' %}">Home</a>
                       <a class="dropdown-item" href="#">Another action</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Something else here</a>

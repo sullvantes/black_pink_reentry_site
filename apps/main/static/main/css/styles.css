@@ -128,14 +128,14 @@ span.address {
 
 .table-hover>tbody>tr:hover{background-color:#f9f9f9}
 
-.newOrgForm{
+.newResourceForm{
     background-color: #000000;
     color:#FA3FB4;
     align-content: center;
     text-align: center
 }
 
-.newOrgForm>input{
+.newResourceForm>input{
     background-color: #000000;
     color:#FA3FB4;
     align-content: center;
@@ -155,6 +155,36 @@ label
     cursor: pointer;
     display: block;
 }
+
+li>label {
+    border: none;
+    color: #FA3FB4;
+    text-align: center;
+    text-decoration: none;
+    display: inline;
+    font-size: 24px;
+    margin: 2px 1px;
+    cursor: pointer;
+    display: inline-block;
+
+    padding: .375rem .75rem;
+    font-size: .4rem;
+    background-color: #000;
+    
+}
+
+
+ul#id_resource_types {
+    list-style-type:none;
+    
+    margin-top: 30px;
+}
+
+ul#id_resource_types>li {
+    display: inline-block;
+}
+
+
 
 
 
@@ -379,6 +409,38 @@ select,textarea {
 
 }
 
+h3#resource-title, h6.resource-side, h3#resource-edit-title, h4#resource-list-title {
+    color:#FA3FB4;
+}
+
+h4#resource-list-title > small {
+    color: #aaaaaa;
+}
+
+.resource-search-bar, .resource-list-form {
+    padding: 1.375rem 1.75rem 1.375rem 1.75rem;
+    margin-bottom: 30px;
+}
 .card{
     color : #aaaaaa;
 } 
+
+span.table-address {
+    display: inline-block;
+}
+
+.resource-type {
+    display: inline-block;
+    width: 30%;
+    height: calc(2.25rem + 2px);
+    padding: .375rem 1.75rem .375rem .75rem;
+    line-height: 1.5;
+    vertical-align: middle;
+    background: #fff url(data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' v…0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E) no-repeat right .75rem center;
+    background-size: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    -webkit-appearance: none;
+}
+
+

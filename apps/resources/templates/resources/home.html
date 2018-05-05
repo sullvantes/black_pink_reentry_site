@@ -1,10 +1,85 @@
 {% extends 'main/header.html' %}
 
 
-{% block title %}Resources Home{% endblock %}
+{% block title %} {{resourcetype}} Resources{% endblock %}
 
 {% block content %}
-    {% for location in cities %}
-        {{location.state}} {{location.city}}<br>
-    {% endfor %}
+<h3>{{resourcetype}} Resources Home</h3>
+<p><span style = "display:inline_block">This is our latest {{resourcetype}} Resource list.</span> Type in the box for a specific organization or select a resource type from the dropdown. If there is an area we are missing, or you know of resources we should add please send us an email <a>here</a></span>
+
+<div class="resource-search-bar">
+<form class="form-inline" method="post" action="{% url 'resources:search_types' %}" >
+        {% csrf_token %}
+    <label class="mr-sm-2" for="inlineFormCustomSelect">Resource Type</label>
+    <select name="resource_type" class="resource-type mb-2 mr-sm-2 mb-sm-0">
+        <option value="">All Resources</option>
+        {% for type in all_resource_types %}
+            {% if type == resourcetype %} 
+            <option selected value="{{type.id}}">{{type.name}} -- {{type.description}}</option>
+            {% else %}
+            <option value="{{type.id}}">{{type.name}} -- {{type.description}}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+<div class="resource-list-form">
+    <h4 id="resource-list-title">Make Resource List <small>Which Resources Do You Need?</h4>
+<!-- <div class="col-md-12 mb-3"> -->
+    <form class="form-inline" method="post" action="{% url 'resources:search_types' %}" >
+        {% csrf_token %}
+        {% for type in all_resource_types %}
+        <div class="form-check form-check-inline">
+        <label class="form-check-label" for="resource_types"><input type="checkbox" name="resource_types" value="{{type.id}}" checked class="form-check form-check-inline"/>
+        </label>
+        {{type}}
+        </div>
+        {% endfor %}
+    <button type="submit" class="btn btn-primary">Make Resource List</button>
+    </form>
+    </div> 
+
+<div class="table-responsive">
+    <table class="table">
+            <thead>
+                <tr>
+                        <th>Type</th>
+                    <th>Organization</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                    <th>Org Contact</th>
+                    <th>Email</th>
+                    <th>Website</th>
+                    <th class="col-md-4">Description</th>
+                    <th>Restrictions/Considerations</th>
+                    <th>Black and Pink Contact</th>
+                    <th>Supported?</th>
+                    <th>Added</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for resource in resources %}
+                <tr class='clickable-row' data-href="{% url 'resources:view_resource' resource_id=resource.id%}"> 
+                    <td>{% for type in resource.resource_types.all %} {{type}} {% endfor %}</td>
+                    <td>{{resource.name}}</td>
+                    <td>{{resource.city}} </td>
+                    <td>{{resource.address}}</td>
+                    <td>{{resource.phone}}</td>
+                    <td>{{resource.contact_name}} </td>
+                    <td>{{resource.email}}</td>
+                    <td>{{resource.website}}</td>
+                    <td>{{resource.notes}} </td>
+                    <td>{{resource.restrictions}}</td>
+                    <td>{{resource.bp_contact}}</td>
+                    <td>{{resource.bp_supported_note}} </td>
+                    <td>{{resource.created_at}} </td>    
+                </tr>    
+            {% endfor %}
+            </tbody>
+    </table>
+</div>
 {% endblock %}

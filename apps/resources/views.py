@@ -9,124 +9,171 @@ from django.db import models
 from models import *
 from forms import *
 
-def header(request):
-    response = {
-        }    
-    return render(request, "main/header.html",response)
 
 def home(request):
-    logged_in = False
-    user=''
-    admin = False
-    if 'current_user_id' in request.session :
-        print request.session['current_user_id']
-        logged_in = True
-        current_id = request.session['current_user_id']
-        current_user = User.objects.get(id=current_id)
-        user=current_user.username
-        if current_user.username=='admin':
-            admin = True
+    all_resource_types = ResourceType.objects.all()        
     cities = Resource.objects.values('city','state').distinct()
+    all_resources = Resource.objects.all()
     response = {
-        'username': user,
-        'admin': admin,
-        'logged_in':logged_in, 
         'cities':cities,
+        'resources' : all_resources,
+        'all_resource_types' : all_resource_types,
+        'resourcetype' : "All"
         }    
     return render(request, "resources/home.html",response)
 
-def all_orgs(request):
-    logged_in = False
-    user=''
-    admin = False
-    if 'current_user_id' in request.session :
-        print request.session['current_user_id']
-        logged_in = True
-        current_id = request.session['current_user_id']
-        current_user = User.objects.get(id=current_id)
-        user=current_user.username
-        if current_user.username=='admin':
-            admin = True
-    all_resources = Resource.objects.all()
-    title = "All Resources"
-    response = {
-        'username': user,
-        'admin': admin,
-        'logged_in':logged_in, 
-        'all_resources':all_resources,
-        'title': title,   
-        }    
-    return render(request, "resources/all.html",response)
+def search_types(request):
+    if request.method == 'POST' and request.POST['resource_type'] != "":
+        print request.POST['resource_type']
+        return redirect(reverse('resources:resource_type', kwargs = {'resource_type_id' : request.POST['resource_type']}))
+    return redirect(reverse('resources:home'))
 
-def modal(request):
-    logged_in = False
-    user=''
-    admin = False
-    if 'current_user_id' in request.session :
-        print request.session['current_user_id']
-        logged_in = True
-        current_id = request.session['current_user_id']
-        current_user = User.objects.get(id=current_id)
-        user=current_user.username
-        if current_user.username=='admin':
-            admin = True
-    first_resource = Resource.objects.all()[0]
-    title = "First Resource"
+def resource_type(request, resource_type_id):
+    all_resource_types = ResourceType.objects.all()        
+    resource_type = ResourceType.objects.get(id = resource_type_id)
+    resources = Resource.objects.filter(resource_types = resource_type)
+    cities = Resource.objects.values('city','state').distinct()
     response = {
-        'username': user,
-        'admin': admin,
-        'logged_in':logged_in, 
-        'first_resource':first_resource,
-        'title': title,   
+        'cities': cities, 
+        'resources' : resources,
+        'all_resource_types' : all_resource_types,
+        'resourcetype' : resource_type,
         }    
-    return render(request, "resources/modal.html",response)
+    return render(request, "resources/home.html", response)
 
-def org_home(request,org_id):
-    logged_in = False
-    user=''
-    admin = False
-    if 'current_user_id' in request.session :
-        print request.session['current_user_id']
-        logged_in = True
-        current_id = request.session['current_user_id']
-        current_user = User.objects.get(id=current_id)
-        user=current_user.username
-        if current_user.username=='admin':
-            admin = True
-    this_org = Resource.objects.get(id=org_id)
-    form = ResourceForm(None, instance=this_org)
-    title = this_org.name + " Home"
+
+def view_resource(request,resource_id):
+    if request.user.is_authenticated:
+        return redirect(reverse('resources:edit_resource', kwargs = {'resource_id' : resource_id}))
+    this_resource = Resource.objects.get(id=resource_id)
+    
+    try:
+        resource_type = ResourceType.objects.filter(resources__id=resource_id)[0]
+        try:
+            other_resources = Resource.objects.exclude(id=resource_id).filter(resource_types__name = resource_type)[:10]
+        except:
+            other_resources = Resource.objects.filter(resource_types__name = resource_type) 
+    except:
+        other_resources = Resource.objects.all()[:10]
+
+    all_resource_types = ResourceType.objects.all()
     response = {
-        'username': user,
-        'admin': admin,
-        'logged_in':logged_in, 
-        'org': this_org,
-        'title': title,   
+        'resource': this_resource,
+        'other_resources': other_resources,
+        'resource_types' : all_resource_types,
+        }    
+    return render(request, "resources/view.html",response)
+
+def edit_resource(request,resource_id):
+    this_resource = Resource.objects.get(id=resource_id)
+    print request.user
+    if this_resource.created_by == None:
+        this_resource.created_by = request.user
+    form = ResourceForm(instance=this_resource)
+    
+    try:
+        resource_type = ResourceType.objects.filter(resources__id=resource_id)[0]
+        try:
+            other_resources = Resource.objects.exclude(id=resource_id).filter(resource_types__name = resource_type)[:10]
+        except:
+            other_resources = Resource.objects.filter(resource_types__name = resource_type) 
+    except:
+        other_resources = Resource.objects.all()[:10]
+    
+    all_resource_types = ResourceType.objects.all()
+
+    response = {
+        'resource': this_resource,
         'form' : form,
+        'other_resources': other_resources,
+        'resource_types' : all_resource_types,
         }    
-    return render(request, "resources/org_home.html",response)
+    return render(request, "resources/edit.html",response)
+
 
 @login_required
-def add_org(request):
+def add_resource(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
+        print "its a POST"
+        print request.POST
         # create a form instance and populate it with data from the request:
+        
+        new_resource_data=request.POST.copy()
+        new_resource_data['created_by']=request.user
         form = ResourceForm(request.POST)
+      
+        if form.is_valid:
+            print form.errors    
+            new_resource = form.save(commit=False)
+            new_resource.created_by = request.user
+            new_resource.save()
+        print form.errors
+
+        return redirect(reverse ('resources:view_resource', kwargs = { 'resource_id': new_resource.id}))
+
+    else:
+        form = ResourceForm()
+        other_resources = Resource.objects.all()[:10]
+    
+        all_resource_types = ResourceType.objects.all()
+        response = {
+            'form' : form,
+            'other_resources': other_resources,
+            'resource_types' : all_resource_types,
+            }    
+        return render(request, "resources/add.html",response)
+
+def save_resource(request, resource_id):
+    # if this is a POST request we need to process the form data
+    print "routed correctly"
+    if request.method == 'POST':
+        print "its a POST"
+        print request.POST
+        this_resource =Resource.objects.get(id = resource_id)
+        # create a form instance and populate it with data from the request:
+        # new_org_dict = request.POST
+        # new_org_dict['created_by'] = request.user
+        form = ResourceForm(instance = this_resource, data = request.POST)
+
         # check whether it's valid:
         if form.is_valid():
-            return redirect(reverse ('resources:all_orgs'))
+            print "its valid"
+            resource = form.save()
+        print form.errors
+            
+        return redirect(reverse ('resources:view_resource', kwargs = { 'resource_id': resource.id}))
 
     # if a GET (or any other method) we'll create a blank form
     else:
-            title = "Add New Resource"
-            form = ResourceForm()
-            response = {
-            'form': form,
-            }
-            return render(request, 'resources/add_org.html', response)
+        return redirect(reverse('resources: home'))
 
-def test(request):
-    return render(request, 'resources/test.html')
+def confirm_delete(request, resource_id ):
+    this_resource = Resource.objects.get(id=resource_id)
+
+    try:
+        resource_type = ResourceType.objects.filter(resources__id=resource_id)[0]
+        try:
+            other_resources = Resource.objects.exclude(id=resource_id).filter(resource_types__name = resource_type)[:10]
+        except:
+            other_resources = Resource.objects.filter(resource_types__name = resource_type) 
+    except:
+        other_resources = Resource.objects.all()[:10]
+
+    all_resource_types = ResourceType.objects.all()
+    response = {
+        'resource': this_resource,
+        'other_resources': other_resources,
+        'resource_types' : all_resource_types,
+        }    
+    return render(request, 'resources/confirm_delete.html', response)
+
+def delete_resource(request):
+    if request.method == 'POST':
+        this_resource = Resource.objects.get(id=request.POST['resource_id'])
+        this_resource.delete()
+    return redirect(reverse('resources:home'))
+    
 
 
 # Create your views here.

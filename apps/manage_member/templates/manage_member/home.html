@@ -1,23 +1,67 @@
-{% load static %} 
-{% include 'main/header.html' %}
-<h1>Inside Member Public Lookup</h1>
-<h3>Uses DOC websites to find member information</h3>
-<!-- <form action="{% url 'release:ind_search' %}" method="post">
-    {% csrf_token %}
-    <input name="govID" type="text" placeholder="Government Prisoner ID --Letters and Numbers">
-    <input name="State" type="text" placeholder="IL" readonly>
+{% extends 'main/header.html' %}
+
+{% block title %}Inside Members{% endblock %}
+
+{% block content %}
+<h3>Member Listings</h3>
+<p>Simply trying to keep tabs on where people are and when they are getting out.</span>
+
+<div class="table-responsive">
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Mailing Address</th>
+                    <th>Projected Parole Date</th>
+                    <th>Projected Discharge Date</th>
+                    <th>Incarcerated Date</th>
+                    <th>Birthdate</th>
+                    <th>Registry?</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for member in members %}
+                <tr>
+                    <td>{{member.gov_id}}</td>
+                    <td>{{member.given_name_alpha}}</td>
+                    <td>{{member.facility}} </td>
+                    <td><span class="table-address"> {{member.given_name}} #{{member.gov_id}}</span>
+                        <span class="table-address">{{member.facility.mailing_address.0}}</span>
+                        <span class="table-address">{{member.facility.mailing_address.1}}</span>
+                        <span class="table-address">{{member.facility.mailing_address.2}}</span>
+                    </td>
+                    
+                    {% if member.parole_date == None %}
+                    <td></td>   
+                    {% else %}
+                    <td>{{member.parole_date}}</td> 
+                    {% endif %}
+                    
+                    <td>{{member.discharge_date}}</td>
+
+                    {% if member.incarcerated_date == None %}
+                    <td></td>   
+                    {% else %}
+                    <td>{{member.incarcerated_date}}</td> 
+                    {% endif %}
+                    
+                    {% if member.birthday == '19750000' %}
+                        <td></td>   
+                    {% else %}
+                        <td>{{member.birthday}}</td>
+                    {% endif %}
+                    
+                    {% if member.so == None %}<td></td>
+                    {% elif member.so %}<td>Yes</td>
+                    {% else %}<td>No</td> 
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+    </table>
+</div>
+
     
-    <input type="submit" value="Submit">
-</form> -->
-<form action="{% url 'release:ind_search' %}" method="post">
-    {% csrf_token %}
-    <div class="form-group">
-        <h4 for="comment">Enter IDs below separated by commas or spaces</h4>
-        <textarea class="form-control" rows="5" id="comment" name="govID"></textarea>
-        <input name="State" type="hidden" placeholder="IL" readonly>
-      </div> 
-    
-    <input type="submit" value="Submit">
-</form>
-</body>
-</html>
+{% endblock %}

@@ -17,8 +17,9 @@ def home(request):
     all_members = Member.objects.all()
     
     response = {
+        'members' : all_members,
         }    
-    return render(request, "resources/home.html",response)
+    return render(request, "manage_member/home.html",response)
 
 def add(request):
     response = {
@@ -55,20 +56,25 @@ def update_searched(request):
         entry_values = ['incarcerated_date', 'parole_date','discharge_date' ]
         for entry in request.session["search_result"]:
             if entry['isValid'] == True:
-                if Member.objects.filter(gov_id=entry['gov_id']):
-                    this_member = Member.objects.get(gov_id = entry['gov_id'])
-                    for value in entry_values:
-                        try:
-                            this_member.make_change(value, entry[value])
-                        except:
-                            pass
-                else:
-                    this_facility = Facility.objects.get(scraped_name=entry['facility_name'])
-                    new_member = Member(facility=this_facility,created_by=username)
-                    for key, value in entry.items():
-                        setattr(new_member, key, value)
-                    new_member.save()
-                    this_member=new_member
+            #     if Member.objects.get(gov_id=entry['gov_id']):
+            #         this_member = Member.objects.get(gov_id = entry['gov_id'])
+            #         for value in entry_values:
+            #             try:
+            #                 this_member.make_change(value, entry[value])
+            #             except:
+            #                 pass
+            #     else:
+            #         this_facility = Facility.objects.get(scraped_name=entry['facility_name'])
+            #         new_member = Member(facility=this_facility,created_by=username)
+            #         for key, value in entry.items():
+            #             setattr(new_member, key, value)
+            #         new_member.save()
+            #         this_member=new_member
+                entry_facility = Facility.objects.get(scraped_name = entry['facility_name'])
+                print entry_facility
+            # for key, value in entry.iteritems():
+            #     print "\t%s : %s " % (key, value)
+
     response = {
         'result':request.session["search_result"], 
         }    
