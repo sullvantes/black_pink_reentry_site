@@ -54,9 +54,20 @@ class Places(object):
             dist = vincenty(self.latlong, place_latlong).feet  
             schools[place.name]= int(dist)
         
+        # playgrounds
+        query_playground_result = self.google_places.nearby_search(
+            location=self.full_address, radius = self.radius, types=[types.TYPE_playground])
+        playgrounds = {}
+        for place in query_playground_result.places:
+            place_latlong = (float(place.geo_location['lat']),float(place.geo_location['lng']))
+            dist = vincenty(self.latlong, place_latlong).feet  
+            playgrounds[place.name]= int(dist)
+        
         print parks
-        print schools   
-        if parks or schools:
+        print schools
+        print playgrounds
+           
+        if parks or schools or playgrounds:
             self.valid_address=False
         else:
             self.valid_address=True
@@ -64,6 +75,7 @@ class Places(object):
         
         locations['parks']=parks
         locations['schools']=schools
+        locations['playgrounds']=playgrounds
         return locations
 
 # This will be a much more accurate calculation based on the bounds of both properties
