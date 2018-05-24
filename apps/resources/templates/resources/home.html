@@ -9,7 +9,7 @@
 <p><span style = "display:inline_block">This is our latest {{resourcetype}} Resource list.</span> Type in the box for a specific organization or select a resource type from the dropdown. If there is an area we are missing, or you know of resources we should add please send us an email <a>here</a></span>
 
 <div class="row">
-    <div class="col-md-6 resource-search-bar">
+    <div class="col-md-5 resource-search-bar">
     <form class="form-inline" method="post" action="{% url 'resources:search_types' %}" >
             {% csrf_token %}
         <label class="mr-sm-2" for="inlineFormCustomSelect">Resource Type</label>
@@ -28,15 +28,36 @@
     </div>
 
 
-    <div class="col-md-3 resource-list-form">
-        <h4 id="create-resource-list-title" data-href="{% url 'resources:make_list' %}">Create Resource List <small>Click To Select Which Resources You Need</small></h4>
+
+
+
+
+
+
+    <div class="col-md-4 resource-list-form">
+        <h4 id="create-resource-list-title">Create Resource List <small>Click To Select Which Resources You Need</small></h4>
+        <div id = 'create-list'>
+                <form class="form-inline" method="post" action="{% url 'resources:search_types' %}" >
+                    {% csrf_token %}
+                    {% for type in all_resource_types %}
+                    <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="resource_types"><input type="checkbox" multiple="multiple" name="types_{{type.id}}" value="True" class="form-check form-check-inline"/>
+                    </label>
+                    {{type}}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Make Resource List</button>
+                </form>
+        </div>
     </div>
     <div class="col-md-3 resource-list-form">
         <h4 id="print-pdf-resource-list-title" data-href="{% url 'resources:pdf_print_resources' %}">Print Resource List <br><small>Click here to download PDF</small></h4>
         <h4 id="print-csv-resource-list-title" data-href="{% url 'resources:csv_print_resources' %}"> <small>Click here for CSV/excel</small></h4>
     </div>
-         
 </div>
+
+
+<div class='row'><br><br></div>
 
 {% regroup resources by main_type as resource_type_list %}
     

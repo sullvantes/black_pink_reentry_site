@@ -62,9 +62,12 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="{% url 'resources:home' %}">Home</a>
-                  <a class="dropdown-item" href="{% url 'resources:add_resource' %}">Add Resource</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{% url 'resources:home' %}">Add</a>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'resources:add_resource' %}">Add Resource</a>
+                  {% else %}
+                  <a class="dropdown-item" href="{% url 'resources:add_resource' %}">Submit Resource</a>
+                  {% endif %}
                 </div>
               </li>
               <li class="nav-item">
@@ -81,16 +84,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item" href="{% url 'members:home' %}">Home</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                  </li>
-              
-              {% else %}
-              <li class="nav-item">
-                    <a class="nav-link disabled" href="{% url 'members:home' %}">Members</a>
-                  </li>
+                    </li>
                 {% endif %}
             </ul>
         </div>

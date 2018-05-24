@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.timezone import make_aware
+from django.contrib.auth.decorators import login_required
 
 from django.db.models import Max
 
@@ -14,14 +15,17 @@ from models import *
 
 # Create your views here.
 
+@login_required
 def home(request):
-    all_members = Member.objects.all()
+
+    all_members = Member.objects.all()[:100]
     
     response = {
         'members' : all_members,
         }    
     return render(request, "manage_member/home.html",response)
 
+@login_required
 def add_members(request):
     if request.method=='POST':
         ids = request.POST['IDsToAdd'].replace(',','')
@@ -33,7 +37,8 @@ def add_members(request):
                 if Member.objects.filter(gov_id = id).count()<1:
                     Member.objects.create(gov_id = id, created_by=request.user)
     return redirect(reverse('members:home'))
-    
+
+@login_required
 def show(request):
     all_members = Member.objects.all()
     
@@ -42,12 +47,14 @@ def show(request):
         }    
     return render(request, "manage_member/all_members.html", response)
 
+@login_required
 def update_existing(request):
     response = {
         'result':request.session["idoc_result"], 
         }    
     return redirect(reverse('members:show'))
 
+@login_required
 def update_searched(request):
     if request.user.is_authenticated():
         username = request.user

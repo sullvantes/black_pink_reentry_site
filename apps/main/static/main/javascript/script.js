@@ -11,8 +11,7 @@ $(document).ready(function(){
     });    
 
     $("#create-resource-list-title").click(function(){
-        window.location = $(this).attr("data-href");
-        return false;
+        $('#create-list').toggle()
     });
 
     $("#print-pdf-resource-list-title").click(function(){
@@ -24,6 +23,9 @@ $(document).ready(function(){
         window.location = $(this).attr("data-href");
         return false;
     });
+
+
+    
 });
 
 

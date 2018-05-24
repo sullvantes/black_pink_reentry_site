@@ -35,7 +35,10 @@ class Resource(models.Model):
     restrictions=models.TextField(null=True, blank= True)
     bp_contact = models.CharField(max_length = 255, null = True, blank= True)
     bp_supported_note =models.TextField(null=True, blank= True)
-    created_by = models.ForeignKey(User, related_name = 'resources', blank = True)
+    created_by = models.ForeignKey(User, related_name = 'created_resources', blank = True)
+    submitted_by = models.CharField(max_length = 255, null = True, blank= True)
+    approved = models.BooleanField(default = True)
+    approved_by = models.ForeignKey(User, related_name = 'approved_resources', null = True, blank = True)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True) 
 
@@ -45,7 +48,7 @@ class Resource(models.Model):
 class ResourceForm(forms.ModelForm):
     class Meta:
         model = Resource
-        fields = ['resource_types', 'name', 'dedicated_to', 'address', 'city', 'state', 'zip_code', 'county', 'phone',  'contact_name', 'email', 'website', 'notes', 'restrictions', 'bp_contact', 'bp_supported_note', 'created_by']
+        fields = ['resource_types', 'name', 'dedicated_to', 'address', 'city', 'state', 'zip_code', 'county', 'phone',  'contact_name', 'email', 'website', 'notes', 'restrictions', 'bp_contact', 'bp_supported_note', 'created_by', 'submitted_by']
         widgets = {
             'resource_types': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(),
