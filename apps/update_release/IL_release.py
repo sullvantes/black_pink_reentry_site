@@ -126,7 +126,8 @@ class Ill_Member(object):
             return 'Inc'
         if status_text == 'PAROLE':
             return 'Par'
-        
+        return 'Unknown'
+
     
     def get_alpha_name(self):
         return self.get_item(self.id + " - ","Parent Institution:").title()
@@ -146,7 +147,7 @@ class Ill_Member(object):
         try:
             timestr=datetime.strptime(date, '%m/%d/%Y').strftime('%Y-%m-%d')
         except:
-            timestr="No Date Given"
+            timestr=datetime(1900,1,1).strftime('%Y-%m-%d')
         return timestr
 
     def get_dob(self):

@@ -125,10 +125,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+ENV_PATH = os.path.abspath(os.path.dirname(__file__))
+MEDIA_ROOT = os.path.join(ENV_PATH, 'media/')
+
+
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = ("apps/main/",)
+
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/resources/all'
+LOGIN_REDIRECT_URL = '/resources/'
 
 #Sends Emails to Console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

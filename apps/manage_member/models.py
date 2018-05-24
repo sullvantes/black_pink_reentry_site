@@ -13,23 +13,26 @@ STATUS_CHOICES = (
     ('Inc', 'IN CUSTODY'),
     ('FREE', 'N/A'),
     ('Par', 'PAROLED'),
+    ('UNK', 'Unknown'),
 )
+
 
 # Create your models here.
 class Member(models.Model):
     gov_id=models.CharField(max_length=24, blank=False,help_text="Government issued ID")
-    given_name = models.CharField(max_length=255, blank=True,help_text="given name")
-    given_name_alpha = models.CharField(max_length=255, blank=True,help_text="given name, last name first")
-    typestate=models.CharField(max_length=10, blank=True)
-    birthday=models.CharField(max_length = 10, blank=True,help_text="birthday in YYYYMMDD, if no full birthday, unknowns are '00'")
+    given_name = models.CharField(max_length=255, blank=True,help_text="given name", null = True)
+    given_name_alpha = models.CharField(max_length=255, blank=True,help_text="given name, last name first", null = True)
+    typestate=models.CharField(max_length=10, blank=True, null = True)
+    birthday=models.CharField(max_length = 10, blank=True, null = True, help_text="birthday in YYYYMMDD, if no full birthday, unknowns are '00'")
     so=models.NullBooleanField(null=True)
     status = models.CharField(max_length=6, choices=STATUS_CHOICES, default='Inc' )
-    facility = models.ForeignKey(Facility, related_name = 'members')
+    facility = models.ForeignKey(Facility, related_name = 'members', null = True )
     incarcerated_date=models.DateField(blank=True, null=True)
     parole_date=models.DateField(blank=True, null=True)
     discharge_date=models.DateField(blank=True, null=True)
     created_by = models.ForeignKey(User, related_name = 'members')
     created_at = models.DateTimeField(auto_now_add = True)
+    checked_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(auto_now = True) 
     
     

@@ -3,6 +3,18 @@
 {% block title %}Inside Members{% endblock %}
 
 {% block content %}
+<h3>Add Members</h3>
+<p>Checks if DOC ID already stored. If not, it adds it. </p>
+
+<form action="{% url 'members:add_members' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <textarea class="form-control" rows="5" id="comment" name="IDsToAdd"></textarea>
+    </div> 
+    <input class = "headButton" type="submit" value="Submit">
+</form>
+
+
 <h3>Member Listings</h3>
 <p>Simply trying to keep tabs on where people are and when they are getting out.</span>
 
@@ -25,6 +37,7 @@
             {% for member in members %}
                 <tr>
                     <td>{{member.gov_id}}</td>
+                    {% if member.given_name_alpha %}
                     <td>{{member.given_name_alpha}}</td>
                     <td>{{member.facility}} </td>
                     <td><span class="table-address"> {{member.given_name}} #{{member.gov_id}}</span>
@@ -56,6 +69,9 @@
                     {% if member.so == None %}<td></td>
                     {% elif member.so %}<td>Yes</td>
                     {% else %}<td>No</td> 
+                    {% endif %}
+                    {% else %}
+                    <td> Not Updated Yet</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                     {% endif %}
                 </tr>
             {% endfor %}

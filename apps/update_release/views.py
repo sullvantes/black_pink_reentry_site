@@ -98,22 +98,22 @@ def facility_home(request,facility_id):
     return render(request,"update_release/facility_home.html",{'form': form})
 
     
-#def pdf_print(request):
-#    # Create the HttpResponse object with the appropriate PDF headers.
-#    response = HttpResponse(content_type='application/pdf')
-#    response['Content-Disposition'] = 'attachment; filename="Mailing Labels.pdf"'
-#
-#    # Create the PDF object, using the response object as its "file."
-#    p = canvas.Canvas(response)
-#
-#    # Draw things on the PDF. Here's where the PDF generation happens.
-#    # See the ReportLab documentation for the full list of functionality.
-#    p.drawString(100, 100, "Hello world.")
-#
-#    # Close the PDF object cleanly, and we're done.
-#    p.showPage()
-#    p.save()
-#    return response
+def pdf_print(request):
+   # Create the HttpResponse object with the appropriate PDF headers.
+   response = HttpResponse(content_type='application/pdf')
+   response['Content-Disposition'] = 'attachment; filename="Mailing Labels.pdf"'
+
+   # Create the PDF object, using the response object as its "file."
+   p = canvas.Canvas(response)
+
+   # Draw things on the PDF. Here's where the PDF generation happens.
+   # See the ReportLab documentation for the full list of functionality.
+   p.drawString(100, 100, "Hello world.")
+
+   # Close the PDF object cleanly, and we're done.
+   p.showPage()
+   p.save()
+   return response
 
 def csv_print(request):
     # Create the HttpResponse object with the appropriate CSV header.
@@ -139,14 +139,16 @@ def csv_print(request):
     csv_dict=request.session['search_result']
     for dict in csv_dict:
         mailing_address=''
-#        print dict[u'mailing_address']
         try:
             for x in dict['mailing_address']:
                 mailing_address+=(x.encode()+'\n')
         except:
             mailing_address = "Facility is not in the DB. Please Investigate."
         dict['Address'] = mailing_address
-        dict['Name']=dict['given_name_alpha']
+        try:
+            dict['Name']=dict['given_name_alpha']
+        except:
+            pass
         dict['ID']=dict['gov_id']
         dict['Location']=dict['facility_name']
         

@@ -1,0 +1,22 @@
+{% extends 'main/header.html' %}
+
+
+{% block title %} Make A Resource List {% endblock %}
+
+{% block content %}
+<div class="resource-list-form">
+    <h4 id="create-resource-list-title">Make Your Own Resource List <small>Check Off The Resources You Would Like To See</h4>
+<div class="col-md-12 mb-3">
+    <form class="form-inline" method="post" action="{% url 'resources:search_types' %}" >
+        {% csrf_token %}
+        {% for type in all_resource_types %}
+        <div class="form-check form-check-inline">
+        <label class="form-check-label" for="resource_types"><input type="checkbox" multiple="multiple" name="types_{{type.id}}" value="True" class="form-check form-check-inline"/>
+        </label>
+        {{type}}
+        </div>
+        {% endfor %}
+    <button type="submit" class="btn btn-primary">Make Resource List</button>
+    </form>
+    </div> 
+{% endblock %}

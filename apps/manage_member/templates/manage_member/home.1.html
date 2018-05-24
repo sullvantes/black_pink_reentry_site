@@ -1,0 +1,18 @@
+ 
+{% extends 'main/header.html' %}
+
+{% block title %}Release Search{% endblock %}
+
+{% block content %}
+<h3>Inside Member Public Lookup</h3>
+<p><span>Uses DOC websites to find member information for Illinois and Federal Inmates.</span> Enter IDs below separated by commas or spaces.</p>
+
+<form action="{% url 'release:ind_search' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <textarea class="form-control" rows="5" id="comment" name="govID"></textarea>
+        <input name="State" type="hidden" placeholder="IL" readonly>
+    </div> 
+    <input class = "headButton" type="submit" value="Submit">
+</form>
+{% endblock %}

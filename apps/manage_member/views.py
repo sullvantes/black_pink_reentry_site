@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import re 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
@@ -21,23 +22,20 @@ def home(request):
         }    
     return render(request, "manage_member/home.html",response)
 
-def add(request):
-    response = {
-        'result':request.session["idoc_result"], 
-        }    
-    return render(request, "manage_member/add.html", response)
+def add_members(request):
+    if request.method=='POST':
+        ids = request.POST['IDsToAdd'].replace(',','')
+        list_of_ids = ids.split()
+        for id in list_of_ids:
+            id = re.sub('[^A-Z0-9]','', id.upper())
+            # print id
+            if (len(id) == 6 and id[1:].isdigit()) or (len(id) == 8 and id.isdigit()) :
+                if Member.objects.filter(gov_id = id).count()<1:
+                    Member.objects.create(gov_id = id, created_by=request.user)
+    return redirect(reverse('members:home'))
     
 def show(request):
-#    all_members = Member.objects.all().annotate(Max(''))
-#    hottest_cake_ids = Bakery.objects.annotate(hottest_cake_id=max('cake__id')).values_list('hottest_cak‌​e_id', flat=True)
-#    hottest_cakes = Cake.objects.filter(id__in=hottest_cake_ids)
-#    
-    
-#    latest_release_ids = Member.objects.annotate(latest_release_id=max('release__id')).values_list('latest_release_id', flat=True)
-#    latest_releases = Release.objects.filter(id__in=latest_release_ids)
-#    
-#    all_members = Member.objects.all()
-    all_members = Member.objects.annotate(newest_entry = Max('release__created_at'))
+    all_members = Member.objects.all()
     
     response = {
         'result':all_members, 

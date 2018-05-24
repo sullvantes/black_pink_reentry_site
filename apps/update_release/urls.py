@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^all_facilities$', all_facilities, name = 'all_facilities'),
     url(r'facility_home/(?P<facility_id>\d+)$', facility_home, name = 'facility_home'),
     
-#    url(r'^pdf_print$', pdf_print, name = 'pdf_print'),
+    url(r'^pdf_print$', pdf_print, name = 'pdf_print'),
     url(r'^csv_print$', csv_print, name = 'csv_print'),
     
 ]

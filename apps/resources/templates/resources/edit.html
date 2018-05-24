@@ -120,19 +120,21 @@
                     </h4>
                     <div class="list-group">
                         <ul class="list-group mb-3">
+                        {% if resource.resource_types.all %}
                         {% for resource_type in resource.resource_types.all %}        
                             <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                <div><a href="{% url 'resources:resource_type' resource_type_id=1 %}">
+                                <div><a href="{% url 'resources:resource_type' resource_type_id=resource_type.id %}">
                                 <h6 class="resource-side my-0"><strong>Other {{resource_type}} Resources</strong></h6>
                                 <small class="text-muted"></small>
                                 </div>
                                 <span class="text-muted"><br/></span></a>
                             </li>
                         {% endfor %}
+                        {% endif %}
                         {% for resource_type in resource_types %}
                             {% if resource_type not in resource.resource_types.all %}
                             <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                <div><a href="{% url 'resources:resource_type' resource_type_id=2 %}">
+                                <div><a href="{% url 'resources:resource_type' resource_type_id=resource_type.id %}">
                                 <h6 class="resource-side my-0">{{resource_type.name}} Resources</h6>
                                 <small class="text-muted"></small>
                                 </div>

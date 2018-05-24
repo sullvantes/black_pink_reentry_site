@@ -10,7 +10,20 @@ $(document).ready(function(){
         $('#showLoginForm').show()
     });    
 
-    
+    $("#create-resource-list-title").click(function(){
+        window.location = $(this).attr("data-href");
+        return false;
+    });
+
+    $("#print-pdf-resource-list-title").click(function(){
+        window.location = $(this).attr("data-href");
+        return false;
+    });
+
+    $("#print-csv-resource-list-title").click(function(){
+        window.location = $(this).attr("data-href");
+        return false;
+    });
 });
 
 
@@ -19,3 +32,4 @@ jQuery(document).ready(function($) {
         window.location = $(this).data("href");
     });
 });
+
