@@ -59,7 +59,7 @@
 
 <div class='row'><br><br></div>
 
-{% regroup resources by main_type as resource_type_list %}
+{% regroup resources by main_type_name as resource_type_list %}
     
 {% for resource_types in resource_type_list %}
 <h5 class = "resource-type-title"> {{resource_types.grouper}}</h5>  

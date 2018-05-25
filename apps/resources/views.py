@@ -26,9 +26,10 @@ from forms import *
 def home(request):
     # clear current resources types from session cache
     if 'curr_resource_types' in request.session:
-        request.session['curr_resource_types']=None
+        del request.session['curr_resource_types']
     all_resource_types = ResourceType.objects.all()        
-    all_resources = Resource.objects.filter(approved = True).annotate(main_type = Min('resource_types__name'))
+    all_resources = Resource.objects.filter(approved = True).annotate(main_type_name = Min('resource_types__name')).annotate(main_type_id = Min('resource_types__id')).order_by('main_type_id')
+    print all_resources.count()
     response = {
         'resources' : all_resources,
         'all_resource_types' : all_resource_types,
@@ -64,7 +65,7 @@ def resource_list(request):
         all_resource_types = ResourceType.objects.all()
         resource_types = request.session['curr_resource_types']
         resource_list = Resource.objects.filter(approved = True, resource_types__in= resource_types )
-        resources = resource_list.annotate(main_type = Min('resource_types__name'))
+        resources = resource_list.annotate(main_type_name = Min('resource_types__name')).annotate(main_type_id = Min('resource_types__id')).order_by('main_type_id')
     else:
         return redirect(reverse('resources:home')) 
 
@@ -276,6 +277,7 @@ class MyFPDF(FPDF, HTMLMixin):
     pass
 
 def pdf_print_resources(request):
+    print "PDF REPORT VIEW WAS PASSED"
     if 'curr_resource_types' in request.session and request.session['curr_resource_types'] != None:
         resource_types = request.session['curr_resource_types']
         resource_list = Resource.objects.filter(approved = True, resource_types__in= resource_types)
@@ -319,7 +321,8 @@ def pdf_print_resources(request):
             if resource.bp_supported_note:
                 html += "<B>Black And Pink Note:<B/> %s<br>" % resource.bp_supported_note  
 
-    html=html.replace(u"\u2018", "'").replace(u"\u2019", "'")
+    # html=html.replace(u"\u2018", "'").replace(u"\u2019", "'")
+    html=''.join([i if ord(i) < 128 else '' for i in html])
 
     file_path = os.path.join(settings.MEDIA_ROOT, "resource_list.pdf")
     pdf=MyFPDF()
@@ -368,9 +371,20 @@ def csv_print_resources(request):
     csv_dict=[]
     for resource in resources:
         this_dict = {}    
-        this_dict['Resource Type'] = (resource.main_type if resource.main_type else "")
-        this_dict['Org Name'] = (resource.name if resource.name else "")
-        this_dict['Address'] = "%s %s %s %s" % (resource.address,resource.city,resource.state,resource.zip_code)
+        this_dict['Resource Type'] = (resource.main_type if resource.main_type else "").title()
+        this_dict['Org Name'] = (resource.name if resource.name else "").title()
+        address =''
+        if resource.address:
+            address+= resource.address.title()
+        if resource.city:
+            address+= "  " + resource.city.title()+", "
+            if resource.state:
+                address+= resource.state+ " "
+            else:
+                address+= "IL "
+        if resource.zip_code:
+            address+= resource.zip_code
+        this_dict['Address'] = address
         this_dict['Phone'] = (resource.phone if resource.phone  else "")
         this_dict['Org Contact'] = (resource.contact_name if resource.contact_name else "")
         this_dict['Description'] = (resource.notes if resource.notes else "")

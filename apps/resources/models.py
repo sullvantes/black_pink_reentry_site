@@ -19,9 +19,8 @@ class ResourceType(models.Model):
 
 
 class Resource(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name = 'Resource Name')
     resource_types=models.ManyToManyField(ResourceType, related_name = 'resources', verbose_name = 'Type', blank=True)
-    dedicated_to=models.TextField(null=True, blank=True)
     address=models.CharField(max_length = 255, null = True, blank= True)
     city=models.CharField(max_length = 55, null = True, blank= True)
     state=models.CharField(max_length = 2, null = True, blank= True)
@@ -48,11 +47,10 @@ class Resource(models.Model):
 class ResourceForm(forms.ModelForm):
     class Meta:
         model = Resource
-        fields = ['resource_types', 'name', 'dedicated_to', 'address', 'city', 'state', 'zip_code', 'county', 'phone',  'contact_name', 'email', 'website', 'notes', 'restrictions', 'bp_contact', 'bp_supported_note', 'created_by', 'submitted_by']
+        fields = ['resource_types', 'name', 'address', 'city', 'state', 'zip_code', 'county', 'phone',  'contact_name', 'email', 'website', 'notes', 'restrictions', 'bp_contact', 'bp_supported_note', 'created_by', 'submitted_by']
         widgets = {
             'resource_types': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(),
-            'dedicated_to': forms.TextInput(attrs={}),
             'address': forms.TextInput(attrs={}),
             'city': forms.TextInput(attrs={}),
             'state': forms.TextInput(attrs={}),
