@@ -18,7 +18,7 @@ from models import *
 @login_required
 def home(request):
 
-    all_members = Member.objects.all()[:100]
+    all_members = Member.objects.all().order_by('-checked_at')[:100]
     
     response = {
         'members' : all_members,

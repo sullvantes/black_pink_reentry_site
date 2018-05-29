@@ -36,7 +36,7 @@ class Fed_Member(object):
         member_dict['facility_name']=self.json_inmate['faclName']
         member_age = self.json_inmate['age']
         member_dict['birthday']= str(datetime.now().year-int(member_age))+'0000'
-        
+        member_dict['status']='Inc'
         return member_dict
     
     def make_new_member(self):
@@ -68,7 +68,7 @@ class Fed_Member(object):
             discharge_date_obj = datetime.strptime(self.json_inmate['projRelDate'],'%m/%d/%Y')
             return discharge_date_obj.strftime('%Y-%m-%d')
         except:
-            return "No Date Given"
+            return "2100-12-31"
         
 
 # test=Fed_Member('34475018').return_dict()

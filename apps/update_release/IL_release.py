@@ -41,7 +41,7 @@ class Ill_Member(object):
             member_dict['status']= self.get_status()
             if member_dict['status']== "Par":
                 member_dict['facility_name']="Free World"
-                member_dict['discharge_date']=""   
+                member_dict['discharge_date']="2000-01-01"   
             else:
                 member_dict['facility_name'] = self.get_location()
                 member_dict['discharge_date']=self.get_discharge_date()
