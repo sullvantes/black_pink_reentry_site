@@ -36,7 +36,7 @@ class Command(BaseCommand):
                     member.delete()
                     pass
 
-
+                print this_dict['given_name_alpha']
                 member_changed = False
                 if 'status' in this_dict:
                     if this_dict['status'] !=   "Par":
