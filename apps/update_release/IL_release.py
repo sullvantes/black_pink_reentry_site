@@ -25,30 +25,30 @@ class Ill_Member(object):
         self.url = 'http://www.idoc.state.il.us/subsections/search/inms_print.asp?idoc='
         self.cut_beginning=self.id
         self.cut_end="SENTENCING INFORMATION"
+        self.msr=False
+        self.life=False
         print "Building", self.id,"..."
 
     def return_dict(self):
         member_dict={}
         member_dict['gov_id']=self.id
-        member_dict['isValid']=self.is_valid()
-        if self.is_valid() and self.incarcerated():
-            member_dict['given_name']=self.get_name()
-            member_dict['given_name_alpha']=self.get_alpha_name()
-            member_dict['status']=self.get_status()
+        member_dict['status']=self.get_status()
+        if self.incarcerated():
+            member_dict['first_name'], member_dict['last_name'] =self.get_name()
             member_dict['incarcerated_date']=self.get_inc_date()
-            member_dict['birthday']=self.get_dob()
+            member_dict['birth_date']=self.get_dob()
             member_dict['parole_date']=self.get_parole_date()
             member_dict['status']= self.get_status()
             if member_dict['status']== "Par":
                 member_dict['facility_name']="Free World"
-                member_dict['discharge_date']="2000-01-01"   
+                member_dict['discharge_date']=None   
             else:
-                member_dict['facility_name'] = self.get_location()
+                member_dict['facility_name'] = self.get_facility()
                 member_dict['discharge_date']=self.get_discharge_date()
+                member_dict['msr']=self.msr
+                member_dict['life']=self.life
             member_dict['typestate']='IL'
             member_dict['so']=self.get_so()
-        else:
-            member_dict['invalid_reason']=self.invalid_reason()
         return member_dict
 
     def make_new_member(self):
@@ -56,7 +56,7 @@ class Ill_Member(object):
                     gov_id = self.id, 
                     given_name = self.get_name(),
                     given_name_alpha = self.get_alpha_name(),
-                    birthday=self.get_dob(),
+                    birth_date=self.get_dob(),
                     incarcerated_date=self.get_inc_date(),
                     parole_date=self.get_parole_date(),
                     so=self.get_so(),
@@ -65,24 +65,6 @@ class Ill_Member(object):
         if d_date:
             new_member.discharge_date=d_date
             
-        
-                    
-    def is_valid(self):
-        if (len(self.id)!=6) or not self.id[0].isalpha() or not self.id[1:].isdigit(): 
-            return False
-        return True
-    
-    def invalid_reason(self):
-        if (len(self.id)!=6): 
-            return " does not appear to be valid. This ID has " + str(len(self.id)) + " characters and IDOC IDs should have 6 characters."
-        
-        if not self.id[0].isalpha() or not self.id[1:].isdigit():
-            return " does not appear to be valid. IDOC ID's have the form A12345. It may be a different state, federal or Illinois DHS."
-        
-        if not self.incarcerated():
-            return " does not return a valid result. There may be a typo or the member may be released."
-        return None
-
     def get_soup(self):
         full_url = self.url + self.id
         response = urllib2.urlopen(full_url)
@@ -124,7 +106,7 @@ class Ill_Member(object):
         status_text=self.get_item("Offender Status:","Location:")
         if status_text == 'IN CUSTODY':
             return 'Inc'
-        if status_text == 'PAROLE':
+        if status_text == 'PAROLE' or not self.incarcerated():
             return 'Par'
         return 'Unknown'
 
@@ -134,20 +116,16 @@ class Ill_Member(object):
 
     def get_name(self):
         name = self.get_alpha_name().split(',')
-        return name[1] + " "+ name[0]
+        return name[1], name[0]
     
-    def get_location(self):
+    def get_facility(self):
         return self.get_item("Parent Institution:","Offender Status:").title()
-        
-    def format_date(self,date):
-        reverse_date= date[6:10]+'-'+date[0:2]+'-'+date[3:5]
-        return reverse_date
 
-    def make_datetime(self,date):
+    def make_datetime(self, date):
         try:
-            timestr=datetime.strptime(date, '%m/%d/%Y').strftime('%Y-%m-%d')
+            timestr=datetime.strptime(date, '%m/%d/%Y').date()
         except:
-            timestr=datetime(1900,1,1).strftime('%Y-%m-%d')
+            timestr=None
         return timestr
 
     def get_dob(self):
@@ -166,5 +144,14 @@ class Ill_Member(object):
         return self.make_datetime(parole_date)
     
     def get_discharge_date(self):
-        dis_date=self.get_item('Projected Discharge Date: ',10) 
+        dis_date=self.get_item('Projected Discharge Date: ',10)
+        # print "Is This MSR?", dis_date
+        if dis_date == '3 YRS TO L':
+            self.msr=True
+            return None
+        if dis_date == 'INELIGIBLE' or dis_date == 'SEXUALLY D':
+            self.life=True
+            return None
+        if dis_date == 'TO BE DETE':
+            return None
         return str(self.make_datetime(dis_date))

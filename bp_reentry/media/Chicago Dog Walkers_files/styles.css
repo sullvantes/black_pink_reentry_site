@@ -1,0 +1,98 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    background-color:#DDDDDD;
+    color:#444444;
+    border-color: black;
+    border-width:0px
+    
+}
+
+#content {
+    margin-bottom: 100px;
+}
+
+#dw_title {
+    background-color:#DDDDDD;
+    font-size   : 1.2rem;
+
+
+}
+.fill {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    overflow: hidden
+}
+.fill img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%
+}
+
+.header-image img{
+    width: auto;
+    height: auto;
+    background-color:#DDDDDD;
+}
+
+
+input {
+    border: 1px #999;
+    border-radius: 0;
+    background-color : #FFFFFF;
+}
+button, input, select, textarea {
+    font-family : inherit;
+    font-size   : 100%;
+    color: red
+  }
+
+.create-client > form > p {
+    display : inline-block !important;
+    width : 50vh;
+    font-size:20px;  
+}
+
+.client-buttons {
+    padding-top:15px;
+    justify-content: center;
+}
+
+.ui-autocomplete {
+    color : blue;
+}
+
+
+.form-group {
+    font-size : 150%;
+}
+
+#change-table>thead>tr, #change-table>tbody>td   {
+    font-size: 50%;
+}
+
+footer {
+    position: fixed; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+}
+
+#wr-list-item {
+    background-color: transparent;
+    border: none;
+}
+
+.wr_summary_row {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: black;
+    border: none;
+}
+
+.side-list-group, li['sb-list-group-item']  {
+    background-color: transparent; 
+    
+}

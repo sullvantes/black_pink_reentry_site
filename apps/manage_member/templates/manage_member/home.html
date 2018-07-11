@@ -16,67 +16,45 @@
 
 
 <h3>Member Listings</h3>
-<p>Simply trying to keep tabs on where people are and when they are getting out.</span>
+<p>...to know where members are and when they are getting out.</p>
+<a href="{% url 'members:show' %}">Show All By Name</a><br>  
+<a href="{% url 'members:show_by_updated' %}">Show All By Checked Date</a>
 
 <div class="table-responsive">
     <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Location</th>
-                    <th>Mailing Address</th>
-                    <th>Projected Parole Date</th>
-                    <th>Projected Discharge Date</th>
-                    <th>Incarcerated Date</th>
-                    <th>Birthdate</th>
-                    <th>Registry?</th>
-                </tr>
-            </thead>
-            <tbody>
+        <thead>
+          <tr>
+            <th style="width: 4%">ID</th>
+            <th style="width: 16%">Name</th>
+            <th>Location</th>
+            <th>Mailing Address</th>
+            <th>Projected Parole/Discharge Date</th>
+            <th>Incarcerated Date</th>
+            <th>Birthdate</th>
+            <th>Registry?MSR?</th>
+            <th>Updated</th>
+            
+              
+          </tr>
+        </thead>
+        <tbody>
             {% for member in members %}
-                <tr>
-                    <td>{{member.gov_id}}</td>
-                    {% if member.given_name_alpha %}
-                    <td>{{member.given_name_alpha}}</td>
-                    <td>{{member.facility}} </td>
-                    <td><span class="table-address"> {{member.given_name}} #{{member.gov_id}}</span>
-                        <span class="table-address">{{member.facility.mailing_address.0}}</span>
-                        <span class="table-address">{{member.facility.mailing_address.1}}</span>
-                        <span class="table-address">{{member.facility.mailing_address.2}}</span>
-                    </td>
-                    
-                    {% if member.parole_date == None %}
-                    <td></td>   
-                    {% else %}
-                    <td>{{member.parole_date}}</td> 
-                    {% endif %}
-                    
-                    <td>{{member.discharge_date}}</td>
-
-                    {% if member.incarcerated_date == None %}
-                    <td></td>   
-                    {% else %}
-                    <td>{{member.incarcerated_date}}</td> 
-                    {% endif %}
-                    
-                    {% if member.birthday == '19750000' %}
-                        <td></td>   
-                    {% else %}
-                        <td>{{member.birthday}}</td>
-                    {% endif %}
-                    
-                    {% if member.so == None %}<td></td>
-                    {% elif member.so %}<td>Yes</td>
-                    {% else %}<td>No</td> 
-                    {% endif %}
-                    {% else %}
-                    <td> Not Updated Yet</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    {% endif %}
-                </tr>
+            <tr>
+                <td style="width: 4%">{{member.gov_id}}</td>
+                <td style="width: 16%">{{member.last_name|default_if_none:""}}, {{member.first_name|default_if_none:""}}</td>
+                <td>{{member.facility.name}}</td>
+                <td>{{member.first_name|default_if_none:""}} {{member.last_name|default_if_none:""}} {{member.gov_id}}<br>
+                    {{member.facility.mailing_address.0}}<br>
+                {{member.facility.mailing_address.1}}<br>
+                {{member.facility.mailing_address.2}}<br></td>
+                <td>{% if member.life %} LIFE {% else %} {{member.parole_date|date:'dMY'|default_if_none:""}}<br>{{member.discharge_date|date:'dMY'|default_if_none:""}}</td>{%endif%}
+                <td>{{member.incarcerated_date|date:'dMY'|default_if_none:""}}</td>
+                <td>{{member.birth_date|date:'dMY'|default_if_none:""}}</td>
+                <td>{% if member.so %}<span>On Reg</span><br>{% endif %}{% if member.msr %}MSR{% endif %}</td>
+                <td>{{member.updated_at|date:'dMY'}}</td>
+            </tr>
             {% endfor %}
-            </tbody>
-    </table>
+        </tbody>
 </div>
 
     

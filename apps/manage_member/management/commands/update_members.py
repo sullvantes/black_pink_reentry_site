@@ -12,7 +12,7 @@ from apps.update_release.FED_release import *
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        needs_update = Member.objects.exclude(status='Par').order_by('checked_at')[:10]
+        needs_update = Member.objects.exclude(status='Par').order_by('-updated_at')[:10]
         
         for member in needs_update:
             try:
@@ -32,7 +32,7 @@ class Command(BaseCommand):
                         this_dict['bday_abb']=""    
                 # delete bad ids
                 else:
-                    print "This id is bad and needs to be fixed and re-added. Deleteing %s" % member.gov_id
+                    print "This id is bad and needs to be fixed and re-added. Deleting %s" % member.gov_id
                     member.delete()
                     pass
 
@@ -75,7 +75,7 @@ class Command(BaseCommand):
                         member.status='Par'
                         print "member has been released"
                         
-                    member.checked_at=datetime.now(pytz.utc)
+                    member.updated_at=datetime.now(pytz.utc)
                     if member_changed:
                         member.updated_at=datetime.now(pytz.utc)
                         print "%s was updated." % member.given_name

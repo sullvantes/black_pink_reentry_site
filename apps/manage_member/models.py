@@ -20,24 +20,26 @@ STATUS_CHOICES = (
 # Create your models here.
 class Member(models.Model):
     gov_id=models.CharField(max_length=24, blank=False,help_text="Government issued ID")
-    given_name = models.CharField(max_length=255, blank=True,help_text="given name", null = True)
-    given_name_alpha = models.CharField(max_length=255, blank=True,help_text="given name, last name first", null = True)
+    first_name = models.CharField(max_length=255, blank=True,help_text="first name", null = True)
+    last_name = models.CharField(max_length=255, blank=True,help_text="last name", null = True)
     typestate=models.CharField(max_length=10, blank=True, null = True)
-    birthday=models.CharField(max_length = 10, blank=True, null = True, help_text="birthday in YYYYMMDD, if no full birthday, unknowns are '00'")
-    so=models.NullBooleanField(null=True)
+    # birthday=models.CharField(max_length = 10, blank=True, null = True, help_text="birthday in YYYYMMDD, if no full birthday, unknowns are '00'")
+    birth_date=models.DateField(blank=True, null=True)
     status = models.CharField(max_length=6, choices=STATUS_CHOICES, default='Inc' )
     facility = models.ForeignKey(Facility, related_name = 'members', null = True )
     incarcerated_date=models.DateField(blank=True, null=True)
     parole_date=models.DateField(blank=True, null=True)
     discharge_date=models.DateField(blank=True, null=True)
+    so=models.BooleanField(blank=True, default=False)
+    msr=models.BooleanField(blank=True, default=False)
+    life=models.BooleanField(blank=True, default=False)
     created_by = models.ForeignKey(User, related_name = 'members')
     created_at = models.DateTimeField(auto_now_add = True)
-    checked_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(auto_now = True) 
     
     
     def __str__(self):
-        return self.given_name
+        return self.last_name+ ', '+self.first_name
     
     def make_change(self, attr, new_value):
         old_value = getattr(self, attr)
@@ -48,6 +50,22 @@ class Member(models.Model):
             return Change.objects.create(member = self, attribute = attr, verbose= change_str)
         else:
             return None
+        
+    def alpha_name(self):
+        return "%s, %s" % (self.last_name, self.first_name)
+    
+    def mailing_address(self):
+        address=[]
+        first_line = self.first_name, self.last_name, self.gov_id
+        address.append(first_line)
+        for line in self.facility.mailing_address():
+            address.append(line)
+        return address
+    # def earliest_date(self):
+    #     if self.parole_date:
+    #         return self.parole_date
+    #     else:
+    #         return self.discharge_date
             
 class NewMemberForm(forms.ModelForm):
     class Meta:

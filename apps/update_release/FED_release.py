@@ -1,7 +1,7 @@
 import urllib2
 import json
 import re
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 from models import Facility
 from ..manage_member.models import *
@@ -27,35 +27,36 @@ class Fed_Member(object):
         member_dict['typestate']='FED'
         member_dict['isValid'] = self.isValid()
         if not self.isValid():
-            member_dict['given_name_alpha']= "is not a valid Federal ID"
+            member_dict['last_name']= "is not a valid Federal ID"
             member_dict['facility_name']=None 
             return member_dict    
-        member_dict['given_name']= self.get_name()
-        member_dict['given_name_alpha']= self.get_alpha_name()
+        member_dict['first_name']= self.get_first_name()
+        member_dict['last_name']= self.get_last_name()
         member_dict['discharge_date']=self.get_discharge_date()
         member_dict['facility_name']=self.json_inmate['faclName']
         member_age = self.json_inmate['age']
-        member_dict['birthday']= str(datetime.now().year-int(member_age))+'0000'
+        year = timedelta(days=365)
+        age=int(member_age)*year
+        approx_birthday=datetime.now().replace(day=1,month=1)-age
+        member_dict['birthday']= approx_birthday.date()
         member_dict['status']='Inc'
         return member_dict
     
     def make_new_member(self):
         new_member = Member(self.return_dict())
-        new_member.save()
-            
-            
+        new_member.save()    
             
     def is_valid_id(self):
         if (len(self.id)!=8) or not self.id.isdigit(): 
             return False
         return True
     
-    def get_alpha_name(self):
-        name=self.json_inmate['nameLast']+", "+self.json_inmate['nameFirst']+" "+self.json_inmate['nameMiddle']
+    def get_last_name(self):
+        name=self.json_inmate['nameLast']
         return name.title()
     
-    def get_name(self):
-        name=self.json_inmate['nameFirst']+" "+self.json_inmate['nameMiddle']+" "+self.json_inmate['nameLast']
+    def get_first_name(self):
+        name=self.json_inmate['nameFirst']+" "+self.json_inmate['nameMiddle']
         return name.title()
     
     def isValid(self):

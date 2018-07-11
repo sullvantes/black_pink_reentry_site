@@ -1,48 +1,88 @@
 {% load static %} 
 {% include 'main/header.html' %}
-<h1>All Saved Members</h1>
-<h3> <a href= "{% url 'release:results_hidden' %}">Hide Invalid Results</a></h3>
-<h5> <a href= "{% url 'release:csv_print' %}">Download these results to CSV</a></h5>
-<h5> <a href= "{% url 'members:update_searched' %}">Add These Members to DB</a></h5>
 
-<table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Location</th>
-        <th>Mailing Address</th>
-        <th>Projected Parole Date</th>
-        <th>Projected Discharge Date</th>
-        <th>Incarcerated Date</th>
-        <th>Birthdate</th>
-        <th>Registry?</th>
-          
-      </tr>
-    </thead>
-    <tbody>
-        {% for item in result %}
+<div class='container'>
+    <div class='row'>
+    <div class='col-md-6'>
+    <h4>Show</h4>
+    
+    <form class="form-inline" action="{%url 'members:show_months' %}" method="post" novalidate>
+            {% csrf_token %}
+            Only Members with Release or Parole Date in Next&nbsp&nbsp
+                <select class="form-control" id="months" name='months'>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option selected>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                    <option>13</option>
+                    <option>14</option>
+                    <option>15</option>
+                    <option>16</option>
+                    <option>17</option>
+                    <option>18</option>
+                </select>&nbspMonths
+                <input class = "btn headButton" type="submit" value="Submit">
+        </form>
+        <br><br>
+        <a class="btn bpButton" role="button" href="{% url 'members:show' %}">All By Name</a>
+        <a class="btn bpButton" role="button" href="{% url 'members:show_by_updated' %}">All By Checked Date</a>
+        
+    </div>
+    <div class='col-md-6'>
+        <h3>Update</h3>
+        {% if stale_records %}
+            There are {{ stale_records }} Member records over a week old. 
+        {% else %}
+            All incarcerated members are updated in the last week.
+        {%endif%}
+        <a class="btn bpButton" role="button" href="{% url 'members:update' num=100 %}">Update Some Members</a>
+        <a class="btn bpButton" role="button" href="{% url 'members:show_stale' %}">Show Records for Update</a>
+        <h3>Export</h3>
+        <a class="btn bpButton" role="button" href= "{% url 'members:csv_print' %}">Download CSV</a>
+        <a class="btn bpButton" role="button" href= "">Download PDF</a>
+    </div>
+    </div><br><br><br>    
+<h1>{{header}}({{count|default_if_none:0}} Members)</h1>
+    <table class="table">
+        <thead>
         <tr>
-            <td>{{item.gov_id}}</td>
-            <td>{{item.given_name_alpha}}</td>
-            <td>{{item.facility.name}}</td>
-            <td>{{item.given_name}} {{item.gov_id}}<br>
-                {{item.facility.mailing_address.0}}<br>
-            {{item.facility.mailing_address.1}}<br>
-            {{item.facility.mailing_address.2}}<br></td>
-            <td>{{item.parole_date}}</td>
-            <td>{{item.newest_entry}}</td>
-            <td>{{item.incarcerated_date}}</td>
-            {% if item.Typestate == 'FED' %}
-                <td>{{item.bday_abb }}</td>
-            {% else %}
-                <td>~ {{item.birthday.0}}/{{item.birthday.1}}/{{item.birthday.2}}</td>
-            {% endif %}
-            <td>{% if item.so %}Yes{% endif %}</td>
-            
+            <th style="width: 4%">ID</th>
+            <th style="width: 16%">Name</th>
+            <th>Location</th>
+            <th>Mailing Address</th>
+            <th>Projected Parole/Discharge Date</th>
+            <th>Incarcerated Date</th>
+            <th>Birthdate</th>
+            <th>Registry?MSR?</th>
+            <th>Updated</th>
         </tr>
-        {% endfor %}
-    </tbody>
+        </thead>
+        <tbody>
+            {% for member in result %}
+            <tr>
+                <td style="width: 4%">{{member.gov_id}}<br><a class="btn btn-sm bpButton " role="button" href= "{% url 'members:update_by_id' id=member.id %}">Update</a></td>
+                <td style="width: 16%">{{member.last_name|default_if_none:""}}, {{member.first_name|default_if_none:""}}</td>
+                <td>{{member.facility.name}}</td>
+                <td>{{member.first_name|default_if_none:""}} {{member.last_name|default_if_none:""}} {{member.gov_id}}<br>
+                    {{member.facility.mailing_address.0}}<br>
+                        {{member.facility.mailing_address.1}}<br>
+                {{member.facility.mailing_address.2}}<br></td>
+                <td>{% if member.life %} LIFE {% else %} {{member.parole_date|date:'dMY'|default_if_none:""}}<br>{{member.discharge_date|date:'dMY'|default_if_none:""}}</td>{%endif%}
+                <td>{{member.incarcerated_date|date:'dMY'|default_if_none:""}}</td>
+                <td>{{member.birth_date|date:'dMY'|default_if_none:""}}</td>
+                <td>{% if member.so %}<span>On Reg</span><br>{% endif %}{% if member.msr %}MSR{% endif %}</td>
+                <td>{{member.updated_at|date:'dMY'}}</td>   
+            </tr>
+            {% endfor %}
+        </tbody>
 </body>
 </html>
 

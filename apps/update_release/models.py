@@ -28,7 +28,7 @@ class Facility(models.Model):
     def mailing_address(self):
         address = []
         if self.name:
-            address.append(self.name)
+            address.append(self.name.replace("Correctional Center", "CC"))
         else:
             address.append(self.scraped_name)
         address.append(self.street_address);

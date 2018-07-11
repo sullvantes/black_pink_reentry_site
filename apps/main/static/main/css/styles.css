@@ -108,6 +108,20 @@ span.address {
     /* float: right; */
 }
 
+.bpButton{
+    background-color: #aaaaaa; 
+    border: none;
+    color: #FA3FB4 !important;
+    padding: 4px 4px;
+    /* text-align: center; */
+    font-size: 2vw;
+    margin: 10px 10px;
+    cursor: pointer;
+    clear: both;
+    align-content: center;
+    /* float: right; */
+}
+
 .card-block{
     color: #495057;
     background-color:white;
