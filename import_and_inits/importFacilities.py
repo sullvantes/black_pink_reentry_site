@@ -1,10 +1,16 @@
 #from apps.main.models import *
 from apps.update_release.models import *
 from django.contrib.auth.models import User
+import os
 
 import csv
-
+cwd = os.getcwd()
+print cwd
 file_name = raw_input('Enter your filename:')
+
+
+cwd = os.getcwd()
+print cwd
 with open(file_name,'rb') as f:
     reader = csv.reader(f)
     your_list = list(reader)

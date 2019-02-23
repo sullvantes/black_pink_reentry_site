@@ -1,12 +1,11 @@
-{% load static %} 
+    {% load static %} 
 {% include 'main/header.html' %}
 <h1>Inside Member Public Lookup Results</h1>
 <h3> <a href= "{% url 'release:results_hidden' %}">Hide Invalid Results</a></h3>
 <h5> <a href= "{% url 'release:csv_print' %}">Download these results to CSV</a></h5>
 <h5> <a href= "{% url 'release:pdf_print' %}">Create PDF</a></h5>
 <h5> <a href= "{% url 'members:update_searched' %}">Add These Members to DB</a></h5>
-
-<table class="table">
+<table class="table table-responsive">
     <thead>
       <tr>
         <th>ID</th>
@@ -23,12 +22,12 @@
     </thead>
     <tbody>
         {% for item in result %}
+        {{item}}
         <tr>
             <td>{{item.gov_id}}</td>
-            <td>{{item.given_name_alpha}}</td>
-            {% if item.isValid %}
+            <td>{{item.first_name}} {{item.last_name}}</td>
             <td>{{item.facility_name}}</td>
-            <td>{{item.given_name}} {{item.gov_id}}<br>
+            <td>{{item.first_name}} {{item.last_name}} {{item.gov_id}}<br>
                 {{item.mailing_address.0}}<br>
             {{item.mailing_address.1}}<br>
             {{item.mailing_address.2}}<br></td>
@@ -42,8 +41,6 @@
             {% endif %}
             <td>{% if item.so %}Yes
                 {% else %}      {{item.so}} {% endif %}</td>
-            {% else %}
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>{% endif %}
             
         </tr>
         {% endfor %}
