@@ -44,7 +44,6 @@ def results(request):
                     memb['bday_abb'] = "~" + memb['birthday'][0:4]
                 except:
                     memb['bday_abb']=""
-                print memb
             else:
                 illmemb=Ill_Member(id)
                 memb=illmemb.return_dict()
@@ -57,7 +56,6 @@ def results(request):
                 memb['mailing_address']=memb_fac.mailing_address()
             except:
                 memb['mailing_address']=[[],[],[]]
-            # print memb
             search_result.append(memb)
             
         request.session["search_result"]=search_result

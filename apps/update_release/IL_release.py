@@ -1,11 +1,7 @@
 from __future__ import unicode_literals
 
-import codecs
-
-import os
 import re
-import shutil
-import requests as url_requests
+import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
@@ -30,7 +26,7 @@ class Ill_Member(object):
 
     def get_soup(self):
         full_url = IL_url + self.id
-        response = url_requests.get(full_url)
+        response = requests.get(full_url)
         return BeautifulSoup(response.text, "html.parser")
 
     def create_values(self):
