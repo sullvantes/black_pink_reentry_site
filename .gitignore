@@ -6,7 +6,6 @@ imports/*.numbers
 scripts/export
 scripts/import
 *.pyc
-.gitignore
 
 
 # Byte-compiled / optimized / DLL files
