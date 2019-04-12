@@ -1,7 +1,7 @@
 notesfordev.txt
 imports/*.csv
 imports/*.numbers
-
+logs/
 *.pdf
 scripts/export
 scripts/import
