@@ -1,4 +1,4 @@
-import urllib2
+import urllib3
 import json
 import re
 from datetime import datetime, date, timedelta
@@ -12,8 +12,8 @@ class Fed_Member(object):
     def __init__(self,id):
         self.id = id
         self.is_valid_id()
-        req = urllib2.Request(fed_url + self.id)
-        response = urllib2.urlopen(req)
+        req = urllib3.Request(fed_url + self.id)
+        response = urllib3.urlopen(req)
         json_stats = json.load(response)
         if len(json_stats['InmateLocator']) >= 1:
             self.json_inmate = json_stats['InmateLocator'][0]
