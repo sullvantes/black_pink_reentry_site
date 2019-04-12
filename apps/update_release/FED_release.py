@@ -6,13 +6,13 @@ from datetime import datetime, date, timedelta
 from models import Facility
 from ..manage_member.models import *
 
+fed_url = 'https://www.bop.gov/PublicInfo/execute/inmateloc?todo=query&output=json&inmateNumType=IRN&inmateNum='
 
 class Fed_Member(object):
     def __init__(self,id):
         self.id = id
-        self.url = 'https://www.bop.gov/PublicInfo/execute/inmateloc?todo=query&output=json&inmateNumType=IRN&inmateNum='
         self.is_valid_id()
-        req = urllib2.Request(self.url + self.id)
+        req = urllib2.Request(fed_url + self.id)
         response = urllib2.urlopen(req)
         json_stats = json.load(response)
         if len(json_stats['InmateLocator']) >= 1:
@@ -38,10 +38,12 @@ class Fed_Member(object):
         year = timedelta(days=365)
         age=int(member_age)*year
         approx_birthday=datetime.now().replace(day=1,month=1)-age
-        member_dict['birthday']= approx_birthday.date()
+        member_dict['birth_date']= approx_birthday.strftime("%Y-%M-%d")
         member_dict['status']='Inc'
+        member_dict['valid'] = True
+        # print member_dict['discharge_date']
         return member_dict
-    
+
     def make_new_member(self):
         new_member = Member(self.return_dict())
         new_member.save()    

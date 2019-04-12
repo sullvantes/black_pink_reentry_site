@@ -1,76 +1,79 @@
 from __future__ import unicode_literals
 
 import codecs
-import csv
+
 import os
-# import re
+import re
 import shutil
 import requests as url_requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-# from django.db import models
-# from django import forms
+from django.db import models
+from django import forms
 # from django.forms import ModelForm
 # from django.contrib.auth.models import User
 
-# from models import Facility
+from models import Facility
 # from ..manage_member.models import *
 
-url = 'http://www.idoc.state.il.us/subsections/search/inms_print.asp?idoc='
+IL_url = 'http://www.idoc.state.il.us/subsections/search/inms_print.asp?idoc='
 
 class Ill_Member(object):
     def __init__(self,id):
         self.id = id
         self.msr = False
         self.life = False
+        self.errors=[]
         self.soup = self.get_soup()
-        # for x in self.soup.find_all('td'):
-        #     print(x)
-        # self.inc = self.incarcerated()
-        # self.so = self.sex_offense()
-        # self.get_facility_name()
-        # self.get_name()
-        # self.status = self.get_status()
-        # print self.status
-        # self.dob=self.get_dob()
-        # self.inc_date = self.get_inc_date()
-        # self.par_date = self.get_parole_date()
-        # self.dis_date = self.get_discharge_date()
-        # print(self.dis_date)
-
-
+        print "Building",self.id,"..."
 
     def get_soup(self):
-        full_url = url + self.id
+        full_url = IL_url + self.id
         response = url_requests.get(full_url)
         return BeautifulSoup(response.text, "html.parser")
+
+    def create_values(self):
+        self.inc = self.incarcerated()
+        if self.inc:
+            self.so = self.sex_offense()
+            self.status = self.get_status()
+            self.fac_name= self.get_facility()
+            self.get_name()
+            self.dob=self.get_dob()
+            self.inc_date = self.get_inc_date()
+            self.par_date = self.get_parole_date()
+            self.dis_date = self.get_discharge_date()
+
 
     def return_dict(self):
         member_dict={}
         member_dict['gov_id']=self.id
         member_dict['status']=self.get_status()
+        member_dict['facility_name']=self.get_facility()
+        member_dict['valid']=self.incarcerated()
         if self.incarcerated():
             self.get_name()
+            member_dict['valid']=True
             member_dict['first_name'] = self.first_name
             member_dict['last_name'] = self.last_name
-            member_dict['incarcerated_date'] = self.get_inc_date()
-            member_dict['birth_date'] = self.get_dob()
-            member_dict['parole_date'] = self.get_parole_date()
-            member_dict['status'] = self.get_status()
+            member_dict['incarcerated_date'] = self.get_inc_date(get_str=True)
+            member_dict['birth_date'] = self.get_dob(get_str=True)
+            member_dict['parole_date'] = self.get_parole_date(get_str=True)
+
             if member_dict['status'] == "Par":
-                member_dict['facility_name'] = "Free World"
                 member_dict['discharge_date'] = None
             else:
-                member_dict['facility_name'] = self.get_facility_name()
-                member_dict['discharge_date'] = self.get_discharge_date()
+                member_dict['discharge_date'] = self.get_discharge_date(get_str=True)
                 member_dict['msr'] = self.msr
                 member_dict['life'] = self.life
             member_dict['typestate'] = 'IL'
             member_dict['so'] = self.sex_offense()
+
         return member_dict
 
     def make_new_member(self):
+        self.create_values()
         new_member = Member(
                     gov_id = self.id,
                     given_name = self.get_name(),
@@ -91,59 +94,87 @@ class Ill_Member(object):
         return bool(len(self.soup.findAll('td', text='Sex Offender Registry Required')))
 
     def get_status(self):
-        try:
+        if self.incarcerated():
             status_text = self.soup.find(string="Offender Status: ").find_next('td').string
             if 'IN CUSTODY' in status_text:
                 return 'Inc'
             if 'PAROLE' in status_text or not self.incarcerated():
                 return 'Par'
             return 'Unknown'
-        except:
-            return 'Not Found'
+        else:
+            return 'Unknown'
 
     def get_name(self):
-        name_div = self.soup.find(string="Parent Institution: ").find_previous('div').string
-        name = re.findall(r"[\w']+", name_div)
-        self.first_name=name[2]
-        self.last_name = name[1]
-
-    def get_facility_name(self):
-        return self.soup.find(string="Parent Institution: ").find_next('td').string
-
-    def make_datetime(self, date):
         try:
-            timestr=datetime.strptime(date, '%m/%d/%Y').date()
+            name_div = self.soup.find(string="Parent Institution: ").find_previous('div').string
+            name = re.findall(r"[\w']+", name_div)
+            self.first_name = name[2].title()
+            self.last_name = name[1].title()
         except:
-            timestr=date
+            self.errors += "name"
+            self.first_name = ''
+            self.last_name = ''
+
+    def get_facility(self):
+        if self.get_status() != 'Inc':
+            return "Free World"
+        else:
+            try:
+                return self.soup.find(string="Parent Institution: ").find_next('td').string.strip().title()
+            except Exception as inst:
+                return "Error finding Prison"
+
+
+    def make_datetime(self, date_str):
+        try:
+            timestr=datetime.strptime(date_str, '%m/%d/%Y').date()
+        except:
+            timestr=date_str
         return timestr
 
-    def get_dob(self):
+    def get_dob(self, get_str=False):
         dob = self.soup.find(string="Date of Birth: ").find_next('td').string
+        if get_str:
+            return dob
         return self.make_datetime(dob)
 
-    def get_inc_date(self):
+    def get_inc_date(self, get_str=False):
         inc = self.soup.find(string="Admission Date: ").find_next('td').string
+        if get_str:
+            return inc
         return self.make_datetime(inc)
 
         # inc_date=self.get_item('Admission Date: ',10)
         # return self.make_datetime(inc_date)
 
-    def get_parole_date(self):
-        if self.get_status() == "Par":
-            par = self.soup.find(string="Parole Date: ").find_next('td').string
-        else:
-            par = self.soup.find(string="Projected Parole Date: ").find_next('td').string
+    def get_parole_date(self, get_str=False):
+        try:
+            if self.get_status() == "Par":
+                par = self.soup.find(string="Parole Date: ").find_next('td').string
+            else:
+                par = self.soup.find(string="Projected Parole Date: ").find_next('td').string
+        except:
+            par="No Parole"
+        if get_str:
+            return par
         return self.make_datetime(par)
 
-    def get_discharge_date(self):
-        # dis_date=self.get_item('Projected Discharge Date: ',10)
+    def get_discharge_date(self, get_str=False):
         dis_date = self.soup.find(string="Projected Discharge Date: ").find_next('td').string
         if '3 YRS TO LIFE' in dis_date:
             self.msr=True
         if 'INELIGIBLE' in dis_date or 'SEXUALLY D' in dis_date:
             self.life=True
+        if get_str:
+            return dis_date
         return self.make_datetime(dis_date)
 
+    def get_csv_list(self):
+        if self.incarcerated():
+            return [self.id, "%s, %s" % (self.last_name, self.first_name), self.fac_name, self.dis_date,
+                    self.par_date, self.life, self.so, self.msr]
+        else:
+            return [self.id, "Member ID not found. Probably been discharged without parole or the member ID is in error"]
     # def get_name(self):
     #
     # # name = self.get_alpha_name().split(',')
@@ -178,7 +209,7 @@ class Ill_Member(object):
 # print test_mem3.return_dict()
 
 
-def Test_IL(ids=['R75586']):
+def make_csv(list):
     for id in ids:
         print Ill_Member(id)
 

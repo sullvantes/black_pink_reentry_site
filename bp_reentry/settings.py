@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     
     'rest_framework',
+    'apps.donate',
     'apps.housing',
     'apps.rest',
     'apps.main',

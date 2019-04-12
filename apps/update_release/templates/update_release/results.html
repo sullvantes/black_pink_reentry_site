@@ -1,51 +1,55 @@
-    {% load static %} 
+{% load static %} 
 {% include 'main/header.html' %}
 <h1>Inside Member Public Lookup Results</h1>
 <h3> <a href= "{% url 'release:results_hidden' %}">Hide Invalid Results</a></h3>
 <h5> <a href= "{% url 'release:csv_print' %}">Download these results to CSV</a></h5>
 <h5> <a href= "{% url 'release:pdf_print' %}">Create PDF</a></h5>
 <h5> <a href= "{% url 'members:update_searched' %}">Add These Members to DB</a></h5>
-<table class="table table-responsive">
+<div class="table-responsive">
+<table class="table">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Location</th>
-        <th>Mailing Address</th>
-        <th>Projected Parole Date</th>
-        <th>Projected Discharge Date</th>
-        <th>Incarcerated Date</th>
-        <th>Birthdate</th>
-        <th>Registry?</th>
+        <th class="fit">ID</th>
+        <th class="fit">Name</th>
+        <th class="fit">Location</th>
+        <th class="fit">Mailing Address</th>
+        <th class="fit">Projected Parole Date</th>
+        <th class="fit">Projected Discharge Date</th>
+        <th class="fit">Incarcerated Date</th>
+        <th class="fit">Birthdate</th>
+        <th class="fit">Registry?</th>
           
       </tr>
     </thead>
     <tbody>
         {% for item in result %}
-        {{item}}
         <tr>
-            <td>{{item.gov_id}}</td>
-            <td>{{item.first_name}} {{item.last_name}}</td>
-            <td>{{item.facility_name}}</td>
-            <td>{{item.first_name}} {{item.last_name}} {{item.gov_id}}<br>
+            <td class="fit"> {{item.gov_id}}</td>
+            <td class="fit" >{{item.last_name}}, {{item.first_name}}</td>
+            {% if item.valid %}
+            <td class="fit" >{{item.facility_name}}</td>
+            <td class="fit" ><span></span>{{item.first_name}} {{item.last_name}} {{item.gov_id}}</span><br>
                 {{item.mailing_address.0}}<br>
-            {{item.mailing_address.1}}<br>
-            {{item.mailing_address.2}}<br></td>
-            <td>{{item.parole_date}}</td>
-            <td>{{item.discharge_date}}</td>
-            <td>{{item.incarcerated_date}}</td>
+                {{item.mailing_address.1}}<br>
+                {{item.mailing_address.2}}<br></td>
+            <td class="fit" >{{item.parole_date}}</td>
+            <td class="fit" >{{item.discharge_date}}</td>
+            <td class="fit" >{{item.incarcerated_date}}</td>
             {% if item.typestate == 'FED' %}
-                <td>{{item.bday_abb }}</td>
+                <td class="fit" >{{item.bday_abb }}</td>
             {% else %}
-                <td>{{item.birthday}}</td>
+                <td class="fit" >{{item.birthday}}</td>
             {% endif %}
-            <td>{% if item.so %}Yes
+            <td class="fit" >{% if item.so %}Yes
                 {% else %}      {{item.so}} {% endif %}</td>
+            {% else %}
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>{% endif %}
             
         </tr>
         {% endfor %}
     </tbody>
 </table>
+</div>
 </body>
 </html>
 

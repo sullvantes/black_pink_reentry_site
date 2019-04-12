@@ -33,39 +33,37 @@ def ind_search(request):
     return redirect(reverse('release:results'))
 
 def results(request):
-    search_result=[]
     if request.session['new_search']:
+        search_result=[]
         for raw_id in request.session['search_members']:
-            try:
-                id = re.sub('[^A-Z0-9]','', raw_id.upper())
-                if id.isdigit():
-                    id=id.zfill(8)
-                    memb = Fed_Member(id).return_dict()
-                    try:
-                        memb['bday_abb'] = "~" + memb['birthday'][0:4]
-                    except:
-                        memb['bday_abb']=""
-                else:
-                    memb=Ill_Member(id).return_dict()
-                    try:
-                        memb['bday_abb'] = memb['birthday'][0:4]+'/'+memb['birthday'][4:2]+'/'+memb['birthday'][6:2]
-                    except:
-                        memb['bday_abb']=""    
+            id = re.sub('[^A-Z0-9]','', raw_id.upper())
+            if id.isdigit():
+                id=id.zfill(8)
+                memb = Fed_Member(id).return_dict()
                 try:
-                    memb_fac = Facility.objects.get(scraped_name__icontains = memb['facility_name'])
-                    memb['mailing_address']=memb_fac.mailing_address()
+                    memb['bday_abb'] = "~" + memb['birthday'][0:4]
                 except:
-                    memb['mailing_address']=[memb['facility_name'],'','']
-                search_result.append(memb)
-            except Exception as inst:
-                print raw_id, id
-                print "\t", type(inst) 
-                print "\t", inst
-        request.session["new_search"]=False
+                    memb['bday_abb']=""
+                print memb
+            else:
+                illmemb=Ill_Member(id)
+                memb=illmemb.return_dict()
+                try:
+                    memb['bday_abb'] = memb['birthday'][0:4]+'/'+memb['birthday'][4:2]+'/'+memb['birthday'][6:2]
+                except:
+                    memb['bday_abb']=""    
+            try:
+                memb_fac = Facility.objects.get(scraped_name = memb['facility_name'])
+                memb['mailing_address']=memb_fac.mailing_address()
+            except:
+                memb['mailing_address']=[[],[],[]]
+            # print memb
+            search_result.append(memb)
+            
         request.session["search_result"]=search_result
-    # print search_result
+        request.session["new_search"]=False
     response = {
-        'result':search_result, 
+        'result':request.session["search_result"], 
         }    
     return render(request, "update_release/results.html", response)
 
@@ -124,8 +122,7 @@ def csv_print(request):
     filename="Updated_Release"+timestr+".csv"
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename='+filename
-    
-    writer = csv.writer(response,dialect='excel')
+
     fieldnames = [  'ID', 
                     'Name', 
                     'Location',
@@ -137,67 +134,47 @@ def csv_print(request):
                     'Registry?'
                  ]
     writer = csv.DictWriter(response, dialect='excel', fieldnames=fieldnames, extrasaction='ignore')
-#    csv_dict= sorted(request.session['search_result'], key=lambda k: k[u'Alpha_Name']) 
-    csv_dict=request.session['search_result']
-    for dict in csv_dict:
-        mailing_address=''
+    csv_list=[]
+    for memb in request.session['search_result']:
+        new_dict = {}
         try:
-            for x in dict['mailing_address']:
-                mailing_address+=(x.encode()+'\n')
+            mailing_address = '%s %s %s\n' % (memb['first_name'], memb['last_name'], memb['gov_id'])
+            mailing_address += '\n'.join(memb['mailing_address']).replace('NA,', '').replace('NA','')
         except:
             mailing_address = "Facility is not in the DB. Please Investigate."
-        dict['Address'] = mailing_address
+        new_dict['Address'] = mailing_address
+        print new_dict['Address']
         try:
-            dict['Name']=dict['given_name_alpha']
+            new_dict['Name']=memb['first_name'] + ' ' + memb["last_name"]
         except:
             pass
-        dict['ID']=dict['gov_id']
+        new_dict['ID']=memb['gov_id']
+        new_dict['Location']=memb['facility_name']
+        
         try:
-            dict['Location']=dict['facility_name']
-        except:
-            pass
-        try:
-            dict['Projected Parole Date']=dict['parole_date']
-        except:
-            pass
-        try:
-            dict['Projected Discharge Date']=dict['discharge_date']
+            new_dict['Projected Parole Date']=memb['parole_date']
         except:
             pass
         try:
-            if dict['typestate'] == 'FED':
-                dict['Birthday']=dict['bday_abb']
+            new_dict['Projected Discharge Date']=memb['discharge_date']
+        except:
+            pass
+        try:
+            if memb['typestate'] == 'FED':
+                new_dict['Birthday']=memb['bday_abb']
             else:
-                dict['Birthday']=dict['birthday']
+                new_dict['Birthday']=memb['birthday']
         except:
             pass
         try:
-            dict['Registry?']=dict['so']
+            new_dict['Registry?']=memb['so']
         except:
             pass
+        print new_dict
+        csv_list.append(new_dict)
             
     writer.writeheader()
-#    writer.writerow(['ID',
-#                    'Name',
-#                    'Location',
-#                    'Mailing Address',
-#                    'Projected Parole Date',
-#                    'Projected Discharge Date',
-#                    'Incarcerated Date',
-#                    'Birthdate',
-#                    'Registry?'])
-    writer.writerows(csv_dict)     
-#        writer.writerow([   item['Id'],
-#                            item['Alpha_Name'],
-#                            item['Location'],
-#                            MAILINGADDRESS
-#                            item['Name']+item['Id']])
-#                            item['mailing_address'][0])
-#                            item['mailing_address'][1])
-#                            item['mailing_address'][2]+'"',
-#                            item['Parole_Date'],
-#                            item['Discharge_Date'],
-#                            item['Incarcerated_Date'],
-#                            item['DOB'],
-#                            "Yes" if item['so'] ])
+    for memb in csv_list:
+        writer.writerow(memb)
+
     return response

@@ -17,7 +17,7 @@ from datetime import datetime
 # from models import Facility
 # from ..manage_member.models import *
 
-url = 'http://www.idoc.state.il.us/subsections/search/inms_print.asp?idoc='
+IL_url = 'http://www.idoc.state.il.us/subsections/search/inms_print.asp?idoc='
 
 class Ill_Member(object):
     def __init__(self,id):
@@ -29,7 +29,7 @@ class Ill_Member(object):
         self.create_values()
 
     def get_soup(self):
-        full_url = url + self.id
+        full_url = IL_url + self.id
         response = url_requests.get(full_url)
         return BeautifulSoup(response.text, "html.parser")
 

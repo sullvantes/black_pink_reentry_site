@@ -483,3 +483,9 @@ td {
 .hidden{
     display : none;
     }
+
+.table td.fit, 
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}

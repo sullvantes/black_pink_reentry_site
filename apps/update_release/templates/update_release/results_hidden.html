@@ -23,9 +23,9 @@
         {% if item.isValid %}
         <tr>
             <td>{{item.gov_id}}</td>
-            <td>{{item.given_name_alpha}}</td>
+           <td>{{item.last_name}}, {{item.first_name}}</td>
             <td>{{item.facility_name}}</td>
-            <td>{{item.given_name}} {{item.gov_id}}<br>
+            <td>{{item.first_name}} {{item.last_name}}  {{item.gov_id}}<br>
                 {{item.mailing_address.0}}<br>
             {{item.mailing_address.1}}<br>
             {{item.mailing_address.2}}<br></td>
